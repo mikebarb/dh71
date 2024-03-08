@@ -1,0 +1,13 @@
+<turbo-frame id="turbo_request_order">
+    <% #byebug %>
+    <% if flash.notice %>
+        <div id="flashNoticePerson" data-filter-target='requestNoticePerson' style="color: green"><%= flash.notice %></div>
+    <% else %>
+        <div id="flashNoticePerson" data-filter-target='requestNoticePerson' style="color: red"><%= flash.alert %></div>
+    <% end %>
+    <%= form_with url: stores_addperson_path, method: :post do |form| %>
+      <%= form.hidden_field :id, value:"", :data => { :filter_target => 'requestPersonId1' } %>
+      <%= form.text_area :name, size: "40x1", class:"hidden", :data => { :filter_target => 'addPersonName' }, autocomplete:"off" %>
+      <%= form.submit "New Person", hidden: :true, class:"m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
+    <% end %>
+  </turbo-frame>

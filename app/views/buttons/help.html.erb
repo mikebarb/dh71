@@ -1,0 +1,32 @@
+<div class="w-full">
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-4xl">Information on Configuring Buttons</h1>
+      <%= link_to 'Buttons', buttons_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+    </div>
+</div>
+<div class="bg-slate-200">
+<p>Buttons need to be managed very carefully as the structure in the buttons database table is quite brittle.</p>
+<p>If you stuff it up, that table will need to be rebuilt!!!</p>
+<br>
+<p>Each button has the following fields.</p>
+<p>id: the record_id for the button, the absolute reference to the button that is made use of in the "enable" field.</p>
+<p>Name: the displayed name for this button.</p>
+<p>Group: Each button belongs to a group. Only one button can be selected within a group. The group titled "Drink" is a mandatory group and are the primary buttons displayed on the left hand group. "Drink" buttons have an associated "enable" field that informs us what buttons should be enabled when the the primary drink buttons is selected.</p>
+<p>Enable: Used only on buttons in the "Drink" group. This is a list of buttons to show when the primary drink button is selected.</p>
+<p>Seq: The order in which buttons are displayed within the group.</p>
+<br>
+<p>The logical flow of button selection and display.</p>
+<p>Assumptions:</p>
+<p>All buttons are on the browser page, just shown or hidden.</p>
+<p>The "Drink" group buttons are in the left column.</p>
+<p>All other buttons are on the right column.</p>
+<p>Each "Named" group with their buttons are shown as sections in alphabethical order. The group name is shown as the section title.</p> 
+<p>The buttons within each group are ordered as per the "Seq" (Sequence) field.</p>
+<p>Only one buttons can be selected within a Group - both left and right hand side.</p>
+<p>Flow:</p>
+<p>On selection of a drink button (e.g. Cap), we highlight that button in the display and place the button name (Cap) into the drink field in the submit area. We then look to see what buttons have been requested to be displayed by looking in the "Enable" field (10,11,12). We then show buttons with that id (button id=10 => Group=Strength, title=1/2), id=11 => Group=Strength, title=1/4), id=12 => Group=Temperature, title=Extra Hot). We then show (unhide) these button on the screen. At the same time, any buttons shown also have their Section (=Group) title shown.</p>
+<p>On selection of a DIFFERENT drink button, everything is cleared and the logic is redone.</p>
+<p>On slection of a right hand button, the button is highlighted and the title is added to the into the drink field in the submit area.</p>
+<p>Right hand side buttons can be deselected.</p>
+<p>On selection of a different PERSON, everything is cleared and starts over again.</p>
+</div>

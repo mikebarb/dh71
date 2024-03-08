@@ -1,0 +1,28 @@
+services:
+
+    web:
+      #build: .
+      image: dh71_prod
+      ports:
+        - "3000:3000"
+      volumes:
+        - .:/rails
+      env_file:
+        - .env/development/database
+        - .env/development/web
+
+    redis:
+      image: redis
+      volumes:
+        - redis_data:/data
+
+    database:
+      image: postgres
+      env_file:
+        - .env/development/database
+      volumes:
+        - db_data:/var/lib/postgresql/data
+
+volumes:
+    db_data:
+    redis_data:

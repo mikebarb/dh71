@@ -1,0 +1,15 @@
+<div class="mx-auto md:w-2/3 w-full">
+  <h1 class="font-bold text-4xl">Editing button</h1>
+
+  <%= render "form", button: @button %>
+
+  <div class="inline-block ml-2">
+    <div class="flex">
+      <%= link_to "Back to buttons", buttons_path, 
+          class: "m-2 rounded-lg py-3 px-5 bg-blue-100 font-medium" %>
+      <%= button_to 'Delete this button', button_path(@button), method: :delete,
+          class: "m-2 rounded-lg py-3 px-5 bg-red-200 font-medium",
+          form: { data: { 'turbo-confirm': 'Are you VERY sure you want to delete this button?' } }  %>
+    </div>
+  </div>
+</div>

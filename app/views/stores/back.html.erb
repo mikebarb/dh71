@@ -1,0 +1,11 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Store Back</h1>
+
+<div id="orders">
+  <% @orders.each do |order| %>
+    <%= render "backorder", order: order %>
+  <% end %>
+</div>
+
+

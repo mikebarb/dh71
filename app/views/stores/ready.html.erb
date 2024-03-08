@@ -1,0 +1,47 @@
+<!--
+#setbackgroundimage {
+  padding-top: 100px;
+  background-image: image_url('ready_background_autumn.jpg');
+  background-repeat:no-repeat;
+  background-size:100%;
+  z-index: 1;
+}
+
+https://design2tailwind.com/blog/tailwindcss-background-image/
+bg-no-repeat  Make it not repeatable
+bg-cover      Have it use all the available space 
+bg-center     Positioning it in the center 
+bg-fixed      Possibly make it parallax 
+-->
+<!--
+<div class="bg-[url(\'ready_background_autumn.jpg\')] bg-no-repeat bg-center bg-fixed text-8xl">
+-->
+  <div id="ready" class="w-full">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <% end %>
+    <div data-controller="ready">
+      <div id="outer container" class="flex">
+        <div id="right container" class="flex flex-col mr-2 w-full">
+          <section class="flex justify-between m-2 w-full">
+            <div class="flex items-center mb-2" data-ready-target="statusSection" data-showStatus="ready">
+            </div>
+          </section>
+        
+          <section class="m-2 w-full">
+            <div class="w-full bg-black text-white text-center"><%= @myUrl %></div>
+            <%= turbo_stream_from 'orders' %>
+            <div id="orders" class="flex flex-col w-full">
+              <% @orders.each do |order| %>
+                <%= render "order", order: order %>
+              <% end %>
+            </div>
+          </section>
+        </div>
+      </div> 
+    </div>
+  </div>
+<!--
+</div>
+-->
+    

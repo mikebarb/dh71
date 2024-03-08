@@ -1,0 +1,17 @@
+<div id="page_header" class="max-sm:hidden relative bg-white w-full flex flex-nowrap">
+  <div class="m-4 bg-white text-black text-lg font-extrabold text-center flex place-content-center ">People</div>
+  <nav class="bg-white">
+    <ul class="absolute right-0 flex place-content-center">
+      <li class="p-2 m-2 text-center bg-blue-300 hover:bg-blue-500 border-2 rounded-full border-blue-800"><%= link_to "Admin", stores_admin_path %></li>
+    </ul>
+  </nav>
+</div>
+
+<p style="color: green"><%= notice %></p>
+
+<div id="people">
+  <% @people.each do |person| %>
+    <%= render person %>
+  <% end %>
+</div>
+

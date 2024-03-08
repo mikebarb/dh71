@@ -1,0 +1,23 @@
+<div id="<%= dom_id order %>">
+  <p>
+    <strong>Ordered:</strong>
+    <%= order.drink %>
+  </p>
+
+  <p>
+  <strong>=> person:</strong>
+    <% #byebug %>
+	<%= order.person.name %>
+  </p>
+
+  <p>
+  <strong>=> When:</strong>
+    <%= time_tag order.created_at, "data-local": "time-ago" %>
+  </p>
+
+  <p>
+  <strong>=> Status:</strong>
+    <%= order.status %>
+  </p>
+
+</div>

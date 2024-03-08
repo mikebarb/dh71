@@ -1,0 +1,39 @@
+<turbo-frame id="turbo_front_<%= dom_id person %>">
+  <% logger.debug ("person1:" + person.inspect) %>
+  <div id="<%= dom_id person %>" class="flex text-black border-2 border-neutral-200 text-base p-4 sm:hover:border-neutral-700"
+        data-filter-target="person"
+        data_person_id ="<%= person.id %>"
+        data_name="<%= person.name %>"
+    <% if person.last_order %>
+        data_order_id="<%= person.last_order.id %>"
+        data_order_drink="<%= person.last_order.drink %>"
+        data_order_status="<%= person.last_order.status %>"
+        data_order_when="<%= time_ago_in_words(person.last_order.created_at) %>"
+    <% end %>
+  >
+
+      <div data-action="click->filter#selectPerson" class="hidden">
+        <span class="fa-regular fa-square-check fa-lg me-2 w-4"></span>
+      </div>
+      <div data-action="click->filter#selectPerson" class="">
+        <span class="fa-regular fa-square fa-lg me-2 w-4"></span>
+      </div>
+
+      <div data-action="click->filter#selectPerson" 
+           class="w-full sm:w-2/5 sm:px-1 sm:mx-1 truncate">
+        <%= person.name %>
+      </div>
+
+    <% if person.last_order %>
+      <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1 truncate"><%= person.last_order.drink  %></div>
+      <div class="w-0 w-1/5 border border-white sm:px-1 sm:mx-1 truncate"><%= person.last_order.status %></div>
+      <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1 truncate"><%= time_tag person.last_order.created_at,
+              "data-local":"time-ago" %></div>
+    <% else %>
+      <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1"></div>
+      <div class="w-0 w-1/5 border border-white sm:px-1 sm:mx-1"></div>
+      <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1"></div>
+    <% end %>
+    
+  </div>
+</turbo-frame>

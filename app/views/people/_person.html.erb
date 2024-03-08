@@ -1,0 +1,27 @@
+<div id="<%= dom_id person %>">
+  <% logger.debug ("person1:" + person.inspect) %>
+  <div id="<%= dom_id person %>" class="flex text-black border-2 border-neutral-200 p-1"
+        data_person_id ="<%= person.id %>"
+        data_name="<%= person.name %>"
+  >  
+    <div class="w-4/12 m-1 p-1 truncate">
+      <%= person.name %>
+    </div>
+    <div class="w-5/12 m-1 p-1 truncate">
+      Added: <%= time_tag person.created_at, "data-local": "time-ago" %>
+    </div>
+
+    <div class="w-1/12 m-1 p-1 text-center bg-blue-300 hover:bg-blue-500 border-2 rounded-full border-blue-800"> 
+         <%= link_to "Show", person, form: { data: { 'turbo-confirm': 'Are you sure?' } } %>
+    </div>
+    <div class="w-1/12 m-1 p-1 text-center bg-blue-300 hover:bg-blue-500 border-2 rounded-full border-blue-800"> 
+      <%= link_to "Edit", edit_person_path(person) %>
+    </div>
+    <div class="w-1/12 m-1 p-1 text-center bg-blue-300 hover:bg-blue-500 border-2 rounded-full border-blue-800"> 
+         <%= button_to "Delete", person, method: :delete, form: { data: { 'turbo-confirm': 'Are you sure?' } } %>
+    </div>
+
+  </div>
+</div>
+
+

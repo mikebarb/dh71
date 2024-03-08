@@ -1,0 +1,6 @@
+<%= form_with model: [person, Order.new] do |form| %>
+  Your order: <br>
+  <%= form.text_area :drink, size: "20x1" %>
+  <%= form.submit %>
+<% end %>
+

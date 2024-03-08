@@ -1,0 +1,15 @@
+<div id="<%= dom_id(order) %>" class="px-2 flex items-center odd:bg-slate-500 even:bg-slate-600 text-white">
+  <div class="w-4/12">
+    <%= order.drink %>
+  </div>
+  <div class="w-4/12">
+    <%= time_tag order.created_at, "data-local": "time-ago" %>
+  </div>
+  <div class="w-3/12">
+    <%= order.status %>
+  </div>
+  <div class="w-1/12 p-2 m-2 bg-blue-300 hover:bg-blue-800 rounded-full border-2 border-blue-800 text-center"> 
+    <%= button_to "Delete", order_path(order.id), method: :delete, form: { data: { 'turbo-confirm': 'Are you sure?' } } %>
+  </div>
+</div>
+

@@ -1,0 +1,11 @@
+<div id="page_header" class="max-sm:hidden relative bg-white w-full flex flex-nowrap">
+  <div class="m-4 bg-white text-black text-lg font-extrabold text-center flex place-content-center ">Edit Person's Name</div>
+  <nav class="bg-white">
+    <ul class="absolute right-0 flex place-content-center">
+      <li class="p-2 m-2 bg-blue-300 hover:border-2 rounded-full border-blue-800"><%= link_to "Show", @person %></li>
+      <li class="p-2 m-2 bg-blue-300 hover:border-2 rounded-full border-blue-800"><%= link_to "People", people_path %></li>
+    </ul>
+  </nav>
+</div>
+
+<%= render "form", person: @person %>

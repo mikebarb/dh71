@@ -1,0 +1,77 @@
+<turbo-frame id="turbo_request_<%= dom_id order %>">
+  <%   colourNew       = "sky-500"
+       colourReady     = "green-500"
+       colourDone      = "slate-500"
+       colourCancelled = "red-500"
+  %>
+  <% if order.status == "new" %>
+    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourNew %>" >
+  <% elsif order.status == "ready" %>
+    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourReady %>" >
+  <% elsif order.status == "done" %>
+    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourDone %>" >
+  <% elsif order.status == "cancelled" %>
+    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourCancelled %>" >
+  <% end %>
+        <%= form_with url: stores_updatestatus_path, method: :post do |form| %> 
+            <% if flash.notice %>
+                <div id="flashNotice" style="color: green"><%= flash.notice %></div>
+            <% else %>
+                <div id="flashNotice" style="color: red"><%= flash.alert %></div>
+            <% end %>
+            <div id="<%= dom_id order %>" 
+                data-ready-target="order" 
+                data-status="<%= order.status %>"
+                data-drink="<%= order.drink %>"
+                class="flex items-center">
+                
+                <%= form.text_area :id, size: "10x1", class: "hidden", :data => { :filter_target => 'orderId' }, value: order.id %>
+                
+                <div class="hidden w-1/12 break-normal block font-medium mb-1">
+                <%= order.id %>
+                </div>
+                
+                <div class="flex items-center content-center w-3/12 break-normal block font-medium mb-1">
+                    <span class="fas fa-hiking m-2"></span>
+                    <span><%= order.person.name %></span>
+                </div>
+
+                <%= form.text_area :orderDrink, size: "40x1", class: "hidden", :data => { :filter_target => 'orderDrink' }, value: order.drink %>                
+                <div class="flex items-center content-center w-3/12 break-normal block font-medium mb-1">
+                    <span class="fas fa-coffee m-2"></span>
+                    <span><%= order.drink %></span>
+                </div>
+
+                <div class="hidden w-1/12 break-normal block font-medium mb-1">
+                    <%= order.status %>
+                </div>  
+
+                <div class="flex w-6/12 ">
+                    <% if order.status != "cancelled" %>
+                        <% if order.status == "new" %>
+                            <%= form.submit "setNew",    disabled: true, value: "new", class:"w-2/6 mx-1 bg-sky-500 border-sky-500 border-2 text-white font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>
+                        <% else %>
+                            <%= form.submit "setNew",    class:"w-2/6 mx-1 bg-white border-sky-500 border-2 rounded-full text-sky-500 font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>  
+                        <% end %>
+
+                        <% if order.status == "ready" %>
+                            <%= form.submit "setReady",    disabled: true, value: "ready", class:"w-2/6 mx-1 bg-green-500 border-green-500 border-2 text-white font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>
+                        <% else %>
+                            <%= form.submit "setReady",    class:"w-2/6 mx-1 bg-white border-green-500 border-2 rounded-full text-green-500 font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>  
+                        <% end %>
+
+                        <% if order.status == "done" %>
+                            <%= form.submit "setDone",    disabled: true, value: "done", class:"w-2/6 mx-1 bg-slate-500 border-slate-500 border-2 text-white font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>
+                        <% else %>
+                            <%= form.submit "setDone",    class:"w-2/6 mx-1 bg-white border-slate-500 border-2 rounded-full text-slate-500 font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>  
+                        <% end %>
+                    <% else %>
+                        <%= form.submit "doDelete", value: "delete", class:"w-2/6 mx-1 bg-red-500 border-bg-red-500 border-2 rounded-full text-white font-bold py-1 px-4", :data => { :filter_target => 'doDelete'} %>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+    </div>
+</turbo-frame>
+    
+    

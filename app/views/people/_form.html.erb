@@ -1,0 +1,25 @@
+<%= form_with(model: person) do |form| %>
+  <% if person.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(person.errors.count, "error") %> prohibited this person from being saved:</h2>
+
+      <ul>
+        <% person.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex text-center items-center">
+    <div>
+      <%= form.text_field :name %>
+    </div>
+
+    <div class="p-2 m-2 bg-blue-300 hover:bg-blue-800 rounded-full border-2 border-blue-800 text-center"> 
+      <%= form.submit %>
+    </div>
+  </div>
+<% end %>
+
+
