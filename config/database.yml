@@ -15,7 +15,6 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: <%= ENV.fetch('DATABASE_HOST') %>
   username: <%= ENV.fetch('POSTGRES_USER') %>
   password: <%= ENV.fetch('POSTGRES_PASSWORD') %>
 
@@ -25,6 +24,7 @@ default: &default
 
 development:
   <<: *default
+  host: <%= ENV.fetch('DATABASE_HOST') %>
   database: dh71_development
 
   # The specified database role being used to connect to PostgreSQL.
@@ -59,6 +59,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  host: <%= ENV.fetch('DATABASE_HOST') %>
   database: dh71_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
