@@ -23,8 +23,8 @@ default: &default
 development:
   <<: *default
   host: <%= ENV.fetch('DATABASE_HOST') %>
-  username: <%= ENV.fetch('POSTGRES_USER') %>
-  password: <%= ENV.fetch('POSTGRES_PASSWORD') %>
+  username: pguser
+  password: pguser
   database: dh71_development
 
   # The specified database role being used to connect to PostgreSQL.
@@ -60,8 +60,8 @@ development:
 test:
   <<: *default
   host: <%= ENV.fetch('DATABASE_HOST') %>
-  username: <%= ENV.fetch('POSTGRES_USER') %>
-  password: <%= ENV.fetch('POSTGRES_PASSWORD') %>
+  username: pguser
+  password: pguser
   database: dh71_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
