@@ -162,20 +162,27 @@ export default class extends Controller {
         if(thisDrink in newDrinks){
           newDrinks[thisDrink] = newDrinks[thisDrink] + 1;
         }else{
-          newDrinks[thisDrink] = 1
-        }
-      }
-      if(node.getAttribute("data-status") == "ready"){
-        countReady = countReady + 1;
-        if(!(thisDrink in newDrinks)){
-          madeDrinks[thisDrink] = 1;
+          newDrinks[thisDrink] = 1;
         }
       }
       if(node.getAttribute("data-status") == "done"){
         countDone = countDone + 1;
       }
     });
+    // need to process done drinks after all the new drinks are done
+    // Issue here is that a made drink may be encountered in the orders list
+    // before we see it in the donwDrinks hash! 
+    [...allOrders].forEach(node=>{
+      var thisDrink = node.getAttribute("data-drink");
+      if(node.getAttribute("data-status") == "ready"){
+        countReady = countReady + 1;
+        if(!(thisDrink in newDrinks)){
+          madeDrinks[thisDrink] = 1;
+        }
+      }
+    });
     // this section is console logging for troubleshooting.
+    // ** set to true to show in console, false otherwise **
     if(false){
       console.log("drinks done :", "\t", countDone);
       console.log("drinks ready:", "\t", countReady);

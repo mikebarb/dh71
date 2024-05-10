@@ -14,7 +14,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_26_071850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "buttons", id: :serial, force: :cascade do |t|
+  create_table "buttons", force: :cascade do |t|
     t.string "name"
     t.string "group"
     t.string "enable"

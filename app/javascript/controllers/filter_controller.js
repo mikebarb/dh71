@@ -337,6 +337,10 @@ export default class extends Controller {
         buttonSubmitCancel.classList.add("invisible");
         buttonSection.classList.remove("hidden");
       }
+      // if description is empty, then hide the "submit order" button.
+      if(this.requestDrinkTarget.value == ""){
+        buttonSubmitOrder.classList.add("invisible");
+      }
       //personNode.scrollIntoView();
       // Need to  hide the newPerson button when a person is selected.
       newPersonButton.classList.add("hidden");
@@ -552,6 +556,7 @@ export default class extends Controller {
       otherOption.classList.remove("hidden");
       otherOption.parentNode.classList.remove("hidden");
       otherOption.classList.add("selected");
+      this.makeDrinkDescription();
     }else{
       // If any other drink button is displayed, then determine what
       // options need to be displayed with it.
@@ -621,7 +626,8 @@ export default class extends Controller {
     //if(iEle.classList.contains("text-white")){
     if(iEle.classList.contains("selected")){
       description = document.getElementById("otherInput").value;
-      this.requestDrinkTarget.value = description.trim();
+      //this.requestDrinkTarget.value = description.trim();
+      this.setRequestDrink(description.trim());
       return;
     }
     // concatenate selected button names
@@ -631,14 +637,28 @@ export default class extends Controller {
       }
     });
     //place into the field ready for ordering drinks
-    var desc = description.trim();
-    this.requestDrinkTarget.value = desc;
+    this.setRequestDrink(description.trim());
+    ////var desc = description.trim();
+    ////this.requestDrinkTarget.value = desc;
     // if nothing in there, disable the Submit Order button.
-    if(desc.length == 0){
-      const buttonSubmitOrder  = this.submitOrderTarget;
-      buttonSubmitOrder.classList.add("invisible");
-    }
+    ////if(desc.length == 0){
+    ////  const buttonSubmitOrder  = this.submitOrderTarget;
+    ////  buttonSubmitOrder.classList.add("invisible");
+    ////}else{
+    ////  this.submitOrderTarget.classList.remove("invisible");
+    ////}
   }
+
+  setRequestDrink(desc){
+    this.requestDrinkTarget.value = desc;
+    if(desc.length == 0){
+      //const buttonSubmitOrder  = this.submitOrderTarget;
+      //buttonSubmitOrder.classList.add("invisible");
+      this.submitOrderTarget.classList.add("invisible");
+    }else{
+      this.submitOrderTarget.classList.remove("invisible");
+    } 
+  }  
 
   addTextOther(){
     console.log("actionInput called");

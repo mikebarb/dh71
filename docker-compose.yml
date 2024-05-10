@@ -2,11 +2,11 @@ services:
 
     web:
       #build: .
-      image: dh71_prod
+      image: dh71
       ports:
-        - "3000:3000"
+        - "3001:3001"
       volumes:
-        - .:/rails
+        - .:/usr/src/app
       env_file:
         - .env/development/database
         - .env/development/web
