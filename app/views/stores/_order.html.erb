@@ -50,21 +50,21 @@
                 <div class="flex w-5/12 ">
                     <% if order.status != "cancelled" %>
                         <% if order.status == "new" %>
-                            <%= form.submit "setNew",    disabled: true, value: "new", class:"w-2/6 mx-1 bg-sky-500 border-sky-500 border-2              text-white   font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>
+                            <%= form.submit "New",    disabled: true, value: "New", class:"w-2/6 mx-1 bg-sky-500 border-sky-500 border-2              text-white   font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>
                         <% else %>
-                            <%= form.submit "setNew",                                  class:"w-2/6 mx-1 bg-white   border-sky-500 border-2 rounded-full text-sky-500 font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>  
+                            <%= form.submit "New",                                  class:"w-2/6 mx-1 bg-white   border-sky-500 border-2 rounded-full text-sky-500 font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>  
                         <% end %>
 
                         <% if order.status == "ready" %>
-                            <%= form.submit "setReady",    disabled: true, value: "ready", class:"w-2/6 mx-1 bg-green-500 border-green-500 border-2              text-white     font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>
+                            <%= form.submit "Ready",    disabled: true, value: "Ready", class:"w-2/6 mx-1 bg-green-500 border-green-500 border-2              text-white     font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>
                         <% else %>
-                            <%= form.submit "setReady",                                    class:"w-2/6 mx-1 bg-white     border-green-500 border-2 rounded-full text-green-500 font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>  
+                            <%= form.submit "Ready",                                    class:"w-2/6 mx-1 bg-white     border-green-500 border-2 rounded-full text-green-500 font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>  
                         <% end %>
 
                         <% if order.status == "done" %>
-                            <%= form.submit "setDone",    disabled: true, value: "done", class:"w-2/6 mx-1 bg-slate-500 border-slate-500 border-2              text-white     font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>
+                            <%= form.submit "Done",    disabled: true, value: "Done", class:"w-2/6 mx-1 bg-slate-500 border-slate-500 border-2              text-white     font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>
                         <% else %>
-                            <%= form.submit "setDone",                                   class:"w-2/6 mx-1 bg-white     border-slate-500 border-2 rounded-full text-slate-500 font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>  
+                            <%= form.submit "Done",                                   class:"w-2/6 mx-1 bg-white     border-slate-500 border-2 rounded-full text-slate-500 font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>  
                         <% end %>
                     <% else %>
                         <%= form.submit "doDelete", value: "delete", class:"w-2/6 mx-1 bg-red-500 border-bg-red-500 border-2 rounded-full text-white font-bold py-1 px-4", :data => { :filter_target => 'doDelete'} %>

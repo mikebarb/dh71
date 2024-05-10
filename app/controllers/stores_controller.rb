@@ -143,13 +143,13 @@ class StoresController < ApplicationController
     @thisOrder = Order.includes(:person).find(params[:id])
     thisOrderTarget = "turbo_request_order_" + @thisOrder.id.to_s
     thisPersonTarget = "turbo_front_person_" + @thisOrder.person.id.to_s
-    if params[:commit] == "setNew"
+    if params[:commit] == "New"
       @thisOrder.status = "new"
     end
-    if params[:commit] == "setReady"
+    if params[:commit] == "Ready"
       @thisOrder.status = "ready"
     end
-    if params[:commit] == "setDone"
+    if params[:commit] == "Done"
       @thisOrder.status = "done"
     end
     if params[:commit] == "delete"

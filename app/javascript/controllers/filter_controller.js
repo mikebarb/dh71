@@ -10,8 +10,8 @@ export default class extends Controller {
     console.log("filter_controller connected", this.element);
     this.person_bg = 'bg-white';
     this.person_bg_selected = 'bg-zinc-200'
-    this.checkIndex = 0;
-    this.boxIndex   = 1;
+    //this.checkIndex = 0;
+    //this.boxIndex   = 1;
     this.button_selected   = ["text-white", "bg-orange-600", "selected"]; 
     this.button_deselected = ["text-orange-600", "bg-white"];
 
@@ -53,10 +53,15 @@ export default class extends Controller {
 
   //--------------------------------------------------------------
   // invoked when the content of the filter Text field changes.
-  // it then invokes doFilter()
+  // it then invokes doFilter() and unselects selected people
   changeFilterText() {
     const textElement = this.filterTextTarget
     //console.log("text changed in filterTextField", textElement.value)
+    // deselect everyone if typing into filter text field.
+    const thisSelectedPersonId = this.peopleTarget.getAttribute("data_person_selected");
+    if(thisSelectedPersonId){
+      this.deselectAllPeople();
+    }
     this.doFilter();
   }
 
@@ -124,8 +129,8 @@ export default class extends Controller {
       //***************** */
       parentNode.classList.remove(this.person_bg);
       parentNode.classList.add(this.person_bg_selected);
-      parentNode.getElementsByTagName("div")[this.checkIndex].classList.remove("hidden");
-      parentNode.getElementsByTagName("div")[this.boxIndex].classList.add("hidden");
+      //parentNode.getElementsByTagName("div")[this.checkIndex].classList.remove("hidden");
+      //parentNode.getElementsByTagName("div")[this.boxIndex].classList.add("hidden");
       element.classList.remove(this.person_bg);
       element.classList.add(this.person_bg_selected);
       // if status is new, and this is from the server, then need to
@@ -212,8 +217,8 @@ export default class extends Controller {
       node.classList.remove(this.person_bg_selected);
       node.classList.add(this.person_bg);
       node.classList.remove("hidden");
-      node.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
-      node.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
+      //node.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
+      //node.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
     });
   }
 
@@ -229,8 +234,8 @@ export default class extends Controller {
       [...allPeople].forEach(node=>{
         if(thisSelectedPersonId != node.getAttribute("data_person_id")){  // selected person
           node.classList.add("hidden");
-          node.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
-          node.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
+          //node.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
+          //node.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
           //node.scrollToTop;
           window.scrollTo(0, 0);
         }
@@ -256,8 +261,8 @@ export default class extends Controller {
     var parentNode = document.getElementById(parentNodeId);
     parentNode.classList.remove(this.person_bg);
     parentNode.classList.add(this.person_bg_selected);
-    parentNode.getElementsByTagName("div")[this.checkIndex].classList.remove("hidden");
-    parentNode.getElementsByTagName("div")[this.boxIndex].classList.add("hidden");
+    //parentNode.getElementsByTagName("div")[this.checkIndex].classList.remove("hidden");
+    //parentNode.getElementsByTagName("div")[this.boxIndex].classList.add("hidden");
 
     //personNode.parentNode.classList.remove(this.person_bg);
     //personNode.parentNode.classList.add(this.person_bg_selected);
@@ -282,8 +287,10 @@ export default class extends Controller {
     var parentNode = document.getElementById(parentNodeId);
     parentNode.classList.remove(this.person_bg_selected);
     parentNode.classList.add(this.person_bg);
-    parentNode.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
-    parentNode.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
+    // remove code to support check boxes or radio buttons! 
+    // Requested change to remove this feature 
+    //parentNode.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
+    //parentNode.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
 
     //personNode.parentNode.classList.remove(this.person_bg_selected);
     //personNode.parentNode.classList.add(this.person_bg);
