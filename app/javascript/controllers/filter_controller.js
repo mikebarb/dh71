@@ -60,7 +60,8 @@ export default class extends Controller {
     // deselect everyone if typing into filter text field.
     const thisSelectedPersonId = this.peopleTarget.getAttribute("data_person_selected");
     if(thisSelectedPersonId){
-      this.deselectAllPeople();
+      const personNode = document.getElementById("person_" + thisSelectedPersonId).firstChild;
+      this.selectPersonWithNode(personNode)
     }
     this.doFilter();
   }
@@ -159,6 +160,7 @@ export default class extends Controller {
   }
   //--------------------------------------------------------------
   // select person and put details in ordering section
+  // or deSelect the person if already selected.
   selectPersonWithNode(personNode){
     console.log("selectPersonWithNode called");
     //clear the flash notice html div field

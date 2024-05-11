@@ -8,6 +8,6 @@
     <%= form_with url: stores_addperson_path, method: :post do |form| %>
       <%= form.hidden_field :id, value:"", :data => { :filter_target => 'requestPersonId1' } %>
       <%= form.text_area :name, size: "40x1", class:"hidden", :data => { :filter_target => 'addPersonName' }, autocomplete:"off" %>
-      <%= form.submit "Add Person", hidden: :true, class:"m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
+      <%= form.submit "New Person", hidden: :true, class:"m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
     <% end %>
   </turbo-frame>

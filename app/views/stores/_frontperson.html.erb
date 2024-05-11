@@ -20,12 +20,12 @@
 
     <% if person.last_order %>
       <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1 truncate"><%= person.last_order.drink  %></div>
-      <div class="w-0 w-1/5 border border-white sm:px-1 sm:mx-1 truncate"><%= person.last_order.status %></div>
+      <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1 truncate"><%= person.last_order.status %></div>
       <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1 truncate"><%= time_tag person.last_order.created_at,
               "data-local":"time-ago" %></div>
     <% else %>
       <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1"></div>
-      <div class="w-0 w-1/5 border border-white sm:px-1 sm:mx-1"></div>
+      <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1"></div>
       <div class="invisible sm:visible w-0 sm:w-1/5 border border-white sm:px-1 sm:mx-1"></div>
     <% end %>
     
