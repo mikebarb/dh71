@@ -1,5 +1,6 @@
 <turbo-frame id="turbo_request_order">
     <% #byebug %>
+    <button data-action="click->filter#backToPeople" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back to People Selection</button>
     <%= form_with url: stores_orderdrink_path, method: :post do |form| %>
     <div class="flex flex-col"> 
         <%= form.hidden_field :id, value:"", :data => { :filter_target => 'requestPersonId' } %>

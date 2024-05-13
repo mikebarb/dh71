@@ -3,8 +3,8 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["requestNotice", "requestNoticePerson", "filterText", "person", "requestPersonId", "requestName",
                     "requestDrink", "addPersonName", "requestPersonId1", "addPersonButton",
-                    "button", "submitOrder", "submitCancel", "people", "requestSection",
-                    "buttonSection", "filterSection"]
+                    "button", "submitOrder", "submitCancel", "people", "people1", "requestSection",
+                    "buttonSection", "filterSection", "addPerson", "addPersonPanelButton"]
   
   connect() {
     console.log("filter_controller connected", this.element);
@@ -12,7 +12,7 @@ export default class extends Controller {
     this.person_bg_selected = 'bg-zinc-200'
     //this.checkIndex = 0;
     //this.boxIndex   = 1;
-    this.button_selected   = ["text-white", "bg-orange-600", "selected"]; 
+    this.button_selected   = ["text-white", "bg-orange-600", "selected"];
     this.button_deselected = ["text-orange-600", "bg-white"];
 
     addEventListener("turbo:before-stream-render",
@@ -57,15 +57,33 @@ export default class extends Controller {
   changeFilterText() {
     const textElement = this.filterTextTarget
     //console.log("text changed in filterTextField", textElement.value)
-    // deselect everyone if typing into filter text field.
+    // deselect the currently selected person if typing into filter text field.
+    this.deSelectPerson();
+    this.doFilter();
+  }
+
+  // deSelect the currently selected person.
+  deSelectPerson(){
     const thisSelectedPersonId = this.peopleTarget.getAttribute("data_person_selected");
     if(thisSelectedPersonId){
       const personNode = document.getElementById("person_" + thisSelectedPersonId).firstChild;
       this.selectPersonWithNode(personNode)
     }
-    this.doFilter();
   }
 
+  backToPeople(){
+    this.deSelectPerson();
+    // hide: filter text area, people area
+    const eleFilter = this.filterSectionTarget;
+    const elePeople = this.peopleTarget;
+    const eleAddPerson = this.addPersonTarget;
+    const eleAddPersonButton = this.addPersonButtonTarget;
+    const eleAddPersonPanel = this.addPersonPanelTarget
+    eleFilter.classList.remove("hidden");
+    elePeople.classList.remove("hidden");
+    
+  }
+     
  // called when there is a turboframe update on this page.
   // input: element = the one with a data-filter-target = "person"
   //                  and also id="person_99"
@@ -77,7 +95,7 @@ export default class extends Controller {
     // key decision making info about this element
     const elementPersonId    = element.getAttribute("data_person_id");                 // record id of person
     const elementStatus      = element.getAttribute("data_order_status");              // status of last order
-    // key desision making info about currently selected person
+    // key decision making info about currently selected person
     const personSelected     = this.peopleTarget.getAttribute("data_person_selected");  // record id of selected person
     //const lastListedPerson   = this.peopleTarget.lastElementChild.lastElementChild;    
     var   noticePerson       = this.requestNoticePersonTarget.textContent;      // response to add person form submit
@@ -150,6 +168,13 @@ export default class extends Controller {
     }
   }
 
+  showAddPerson(){
+    const eleAddPerson = this.addPersonTarget;
+    const eleFilterSection = this.filterSectionTarget;
+    eleAddPerson.classList.remove("hidden");
+    eleFilterSection.classList.add("hidden");
+  }
+
   selectPerson(){
     console.log("selectPerson called");
     // make sure there are people to process
@@ -206,7 +231,15 @@ export default class extends Controller {
     this.showHideStuff(personNode);  
     // reset drink buttons
     this.initialiseButtons()
+    // hide: filter text area, people area
+    const eleFilter = this.filterSectionTarget;
+    const elePeople = this.peopleTarget;
+    const eleAddPerson = this.addPersonTarget;
+    eleFilter.classList.add("hidden");
+    elePeople.classList.add("hidden");
+    eleAddPerson.classList.add("hidden");
   }
+
   //-----------------------------------
   // selectPerson() helper functions
   //-----------------------------------
@@ -369,6 +402,84 @@ export default class extends Controller {
   // END OF selectPerson() helper functions
   //-----------------------------------
 
+
+  //---------------------------------------------------------------
+  // When keying in a name to be added, we must check that that name
+  // is not already in the system.
+  // Note: this is based on the doFilter function.
+  // input: the text field
+  // operation:    Can only add a person if a person's name does 
+  //               not already exist.
+  //               Sets canAddName = FALSE if anyone has a name 
+  //               exactly matches the search script. 
+  //               Otherwise, set to TRUE.
+  //                 
+  checkExistingNames(){
+    console.log("checkExistingNames function requested");
+    
+    // initialise canAddName - default to prevent adding a person
+    let canAddName = true;
+    // get the text to use as the filter
+    const nameText = this.addPersonNameTarget.value.trim().toLowerCase()
+    // get the button that need to be displayed or hidden - addPersonName
+    //const addPersonButton = this.addPersonButtonTarget
+    const addPersonButton = this.addPersonButtonTarget;
+    console.log("addPersonButton", addPersonButton);
+
+    // ensure there are people on the page
+    if(this.hasPersonTarget) {
+      // As there are people, set canAddName to allow adding another
+      // person unless we find an exact match.
+      canAddName = true
+
+      // get an array of all the person nodes containing each person
+      const allPeople  =  this.personTargets;
+      //console.log(allPeople);
+
+      //const allButtons  =  this.buttonTargets;
+      //console.log(allButtons);
+  
+      // step through each person, hiding or showing person node based on a filter match
+      [...allPeople].forEach(node=>{
+        // Check if this person is an exact match
+         if(canAddName){
+          if(node.getAttribute('data_name').toLowerCase().trim().normalize() === nameText.normalize()){
+            canAddName = false
+          }
+        }
+      });
+      if(canAddName){
+        //this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
+        //addPersonButton.hidden = false;
+        addPersonButton.classList.remove("hidden");
+      }else{
+        //this.addPersonNameTarget.value = "";
+        //addPersonButton.hidden = true;
+        addPersonButton.classList.add("hidden");
+      }
+      if(nameText.trim().length == 0){
+        //addPersonButton.hidden = true;
+        addPersonButton.classList.add("hidden");
+      }
+      //if(selectedPersonId != 0){
+      //  var selectedPersonElement = document.getElementById("person_" + selectedPersonId);
+      //  selectedPersonElement.scrollIntoView();
+      //}
+
+    }else{     // no names on the page - only happens on app/db initialisation
+      // As there are no people, can always add the name.
+      //this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
+      if(nameText.trim().length != 0){
+        //addPersonButton.hidden = false;
+        addPersonButton.classList.remove("hidden");
+      }
+    }
+    console.log("addPersonButton", addPersonButton);
+  };
+
+
+
+
   //---------------------------------------------------------------
   // Filters all the people by name 
   // EXCEPT will not hide a selected person!
@@ -396,7 +507,9 @@ export default class extends Controller {
     // get the text to use as the filter
     const filterText = this.filterTextTarget.value.trim().toLowerCase()
     // get the button that need to be displayed or hidden - addPersonName
-    const addPersonButton = this.addPersonButtonTarget
+    //const addPersonButton = this.addPersonButtonTarget
+    const addPersonButton = this.addPersonPanelButtonTarget;
+    console.log("addPersonButton", addPersonButton);
 
     // ensure there are people on the page
     if(this.hasPersonTarget) {
@@ -429,14 +542,18 @@ export default class extends Controller {
         }
       });
       if(canAddName){
-        this.addPersonNameTarget.value = this.filterTextTarget.value.trim()
-        addPersonButton.hidden = false
+        this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
+        //addPersonButton.hidden = false;
+        addPersonButton.classList.remove("hidden");
+
       }else{
-        this.addPersonNameTarget.value = ""
-        addPersonButton.hidden = true
+        this.addPersonNameTarget.value = "";
+        //addPersonButton.hidden = true;
+        addPersonButton.classList.add("hidden");
       }
       if(this.filterTextTarget.value.trim().length == 0){
-        addPersonButton.hidden = true
+        //addPersonButton.hidden = true;
+        addPersonButton.classList.add("hidden");
       }
       if(selectedPersonId != 0){
         var selectedPersonElement = document.getElementById("person_" + selectedPersonId);
@@ -445,11 +562,13 @@ export default class extends Controller {
 
     }else{     // no names on the page - only happens on app/db initialisation
       // As there are no people, can always add the name.
-      this.addPersonNameTarget.value = this.filterTextTarget.value.trim()
+      this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
       if(this.filterTextTarget.value.trim().length != 0){
-        addPersonButton.hidden = false
+        //addPersonButton.hidden = false;
+        addPersonButton.classList.remove("hidden");
       }
     }
+    console.log("addPersonButton", addPersonButton);
   };
 
   //-------------------------------------------------------------------------------------------------------------------------------

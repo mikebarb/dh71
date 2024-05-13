@@ -1,6 +1,8 @@
+<!-- The data controller - filter -->
 <div data-controller="filter">
   <div id="front">
     <p class="bg-orange-500"><%= notice %></p>
+    <!-- The header for the store front page, include the navigation buttons to the brewster page -->
     <div id="page_header" class="max-sm:hidden relative bg-white w-full flex flex-nowrap">
       <div class="m-4 bg-white text-black text-lg font-extrabold  text-center flex place-content-stretch">Store Front</div>
       <nav class="bg-white">
@@ -11,23 +13,35 @@
     </div>
     <div id="outer_container" class="bg-zinc-100 mb-32 flex flex-col flex-shrink flex-nowrap overflow-y-scroll h-fit">
       <div id="first_container" class="w-full ">
+        <!-- section filterSection - this displays the filter functionally +
+             displays the addPerson button when appropiate.
+             Note: addPerson is a separate template, as it get dynamically updated from server. -->
         <section id="filter_section" class="bg-indigo-900 flex" data-filter-target="filterSection" >
           <div class="self-center">
             <div class="flex">
               <span class="fas fa-search fa-lg p-3 text-center text-white self-center border-indigo-950 border-s-2 border-y-2"></span>
               <input id="filterText" data-filter-target="filterText" class="w-5/6 bg-white text-base border-indigo-950 border-2 focus:border-black focus:border-4 focus:border-double" data-action="keyup->filter#changeFilterText" type="text" placeholder="filter/add names" autocomplete="off">
             </div>
+            <button data-action="click->filter#showAddPerson" data-filter-target="addPersonPanelButton" class="hidden bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Another Name</button>
+            <!-- These buttons were for testing these functions during development.
             <button data-action="click->filter#doFilter" class="hidden bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Filter</button>
             <button data-action="click->filter#doSort" class="hidden bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Sort</button>
-          </div>
-          <div id="add_person" class="self-center">
-            <%= render "frontaddperson" %>
+            -->
           </div>
         </section>
+        <!-- Section addPerson - this includes the form that enables a person to be added -->
+        <section id="add_person" data-filter-target="addPerson" class="self-center hidden">
+            <%= render "frontaddperson" %>
+        </section>
       </div>
+      <!-- Section requestSection - this is the section that has the form for ordering a drink -->
+      <section id="fourth_container" class="hidden bg-indigo-900 w-full" id="request_section" data-filter-target="requestSection">
+        <%= render "frontrequestdrink" %>
+      </section>
       <div id="secondAndThird_container" class="w-full flex-nowrap flex-shrink">
         <div id="second_container" class="w-full">
-          <section id="people_section">
+          <!-- Section -->
+          <section id="people_section" data-filter-target="people1" >
             <%= turbo_stream_from 'people' %>
             <div id="people" data-filter-target="people" data_person_selected="" 
                   class="bg-white flex flex-col flex-nowrap">
@@ -39,10 +53,11 @@
           </section>
         </div>
 
+        <!-- Section buttonSection - the display of all the buttons to allow you to select your drink -->
         <section id="third_container" class="hidden bg-zinc-100 mb-2 flex-grow flex flex-col flex-nowrap" id="buttons_section" data-filter-target="buttonSection">    
           <div id="drinkarea" class="flex flex-row" >
             <div id="grpDrinks" class="flex flex-col w-5/12 mx-4 mt-4" >
-                <h2 class="mb-2 font-serif text-2xl font-bold">Drink</h2>
+                <h2 class="mb-2 font-serif text-2xl font-bold">Select Your Drink</h2>
       <% 
                 @buttons.each do |b|
                     if b.group == "Drink" then
@@ -93,10 +108,6 @@
         </section>
      </div>
     </div>
-
-    <section id="fourth_container" class="hidden fixed bottom-0 bg-indigo-900 w-full" id="request_section" data-filter-target="requestSection">
-      <%= render "frontrequestdrink" %>
-    </section>
 
   </div>
 </div>
