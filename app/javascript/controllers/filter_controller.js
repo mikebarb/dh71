@@ -78,10 +78,9 @@ export default class extends Controller {
     const elePeople = this.peopleTarget;
     const eleAddPerson = this.addPersonTarget;
     const eleAddPersonButton = this.addPersonButtonTarget;
-    const eleAddPersonPanel = this.addPersonPanelTarget
     eleFilter.classList.remove("hidden");
     elePeople.classList.remove("hidden");
-    
+    eleAddPerson.classList.add("hidden");
   }
      
  // called when there is a turboframe update on this page.
@@ -171,8 +170,10 @@ export default class extends Controller {
   showAddPerson(){
     const eleAddPerson = this.addPersonTarget;
     const eleFilterSection = this.filterSectionTarget;
+    const elePeople = this.peopleTarget;
     eleAddPerson.classList.remove("hidden");
     eleFilterSection.classList.add("hidden");
+    elePeople.classList.add("hidden");
   }
 
   selectPerson(){
@@ -541,6 +542,8 @@ export default class extends Controller {
           }
         }
       });
+      // Claire's comment - allow this button to always show.
+      canAddName = true;
       if(canAddName){
         this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
         //addPersonButton.hidden = false;
@@ -551,10 +554,10 @@ export default class extends Controller {
         //addPersonButton.hidden = true;
         addPersonButton.classList.add("hidden");
       }
-      if(this.filterTextTarget.value.trim().length == 0){
+      ////if(this.filterTextTarget.value.trim().length == 0){
         //addPersonButton.hidden = true;
-        addPersonButton.classList.add("hidden");
-      }
+      ////  addPersonButton.classList.add("hidden");
+      ////}
       if(selectedPersonId != 0){
         var selectedPersonElement = document.getElementById("person_" + selectedPersonId);
         selectedPersonElement.scrollIntoView();
