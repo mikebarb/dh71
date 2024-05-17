@@ -41,7 +41,7 @@
           <%= render "frontrequestdrink" %>
         </section>
       </div>
-      <div id="secondAndThird_container" class="overflow-y-autow-full flex-col flex-nowrap flex-shrink w-full">
+      <div id="bottom_container" class="overflow-y-autow-full flex-col flex-nowrap flex-shrink w-full">
         <!-- <div id="second_container" class="w-full"> -->
           <!-- Section -->
           <section id="people_section" data-filter-target="people1">
@@ -59,9 +59,9 @@
         <!-- <div id="third_container" class="w-full"> -->
           <!-- Section buttonSection - the display of all the buttons to allow you to select your drink -->
           <section id="buttons_section"  class="hidden bg-zinc-100 mb-2 flex-grow flex flex-col flex-nowrap" data-filter-target="buttonSection">    
-            <div id="drinkarea" class="flex flex-row" >
+            <h2 data-filter-target="selectDrinksTitle" class="mb-2 font-serif text-2xl font-bold">Select Your Drink</h2>
+            <div id="drinkarea" data-filter-target="drinkArea" class="flex flex-row" >
               <div id="grpDrinks" class="flex flex-col w-5/12 mx-4 mt-4" >
-                  <h2 class="mb-2 font-serif text-2xl font-bold">Select Your Drink</h2>
         <% 
                   @buttons.each do |b|
                       if b.group == "Drink" then
@@ -73,7 +73,7 @@
         %><!--
               --><button id="other" data-filter-target="button" data-category="Drink" data-action="click->filter#selectDrinkButton" class="xm-8 py-2 px-8 mt-1 border border-width-1 border-orange-600 bg-white sm:hover:bg-yellow-700 text-orange-600 font-bold py-2 px-4 rounded rounded-md" data-enable="otherInput">Other</button>
               </div><!--
-          --><div id="grpoptionsgroups" class="flex flex-col w-5/12 mx-4 mt-16">
+          --><div id="grpoptionsgroups" class="flex flex-col w-5/12 mx-4 mt-4">
         <% 
                   currentGroup = ""
                   @buttons.each do |b|
@@ -103,11 +103,15 @@
         --><%
                 end
         %><!--
-              --><div id="grpoptions" class="hidden flex flex-col">
+              --><!-- <div id="grpoptions" class="hidden flex flex-col">
                     <h2>Other</h2>
                     <input id="otherInput" data-filter-target="button" data-category="Other" data-action="keyup->filter#addTextOther" class="hidden bg-slate-500" type="text" placeholder="Describe drink" title="Drink Description">
-                  </div>
+                  </div> -->
               </div>
+            </div>
+            <div id="grpoptions" class="hidden flex flex-col">
+              <!-- <h2>Other</h2> -->
+              <input id="otherInput" data-filter-target="button" data-category="Other" data-action="keyup->filter#addTextOther" class="hidden bg-slate-500" type="text" placeholder="Describe drink" title="Drink Description">
             </div>   
           </section>   <!-- end of buttons_section -->
         <!-- </div>    end of third container -->

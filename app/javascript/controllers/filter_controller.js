@@ -4,14 +4,13 @@ export default class extends Controller {
   static targets = ["requestNotice", "requestNoticePerson", "filterText", "person", "requestPersonId", "requestName",
                     "requestDrink", "addPersonName", "requestPersonId1", "addPersonButton",
                     "button", "submitOrder", "submitCancel", "people", "people1", "requestSection",
-                    "buttonSection", "filterSection", "addPerson", "addPersonPanelButton", "personExistsMessage"]
+                    "buttonSection", "filterSection", "addPerson", "addPersonPanelButton",
+                    "personExistsMessage", "selectDrinksTitle"];
   
   connect() {
     console.log("filter_controller connected", this.element);
     this.person_bg = 'bg-white';
-    this.person_bg_selected = 'bg-zinc-200'
-    //this.checkIndex = 0;
-    //this.boxIndex   = 1;
+    this.person_bg_selected = 'bg-zinc-200';
     this.button_selected   = ["text-white", "bg-orange-600", "selected"];
     this.button_deselected = ["text-orange-600", "bg-white"];
 
@@ -616,8 +615,6 @@ export default class extends Controller {
     [...this.button_selected].forEach(myClass=>{
       buttonNode.classList.add(myClass);
     });
-    console.log("buttonNode");
-    console.log(buttonNode);
     // what else should be displayed.
     // - just let it go back to default font colour
     // Check if this is the special button - "other"
@@ -632,6 +629,10 @@ export default class extends Controller {
       otherOption.parentNode.classList.remove("hidden");
       otherOption.classList.add("selected");
       this.makeDrinkDescription();
+      // scroll back to the top of the buttons so that the options are visible.
+      //const box = this.selectDrinksTitleTarget;
+      const eleOtherButton = document.getElementById("otherInput");
+      eleOtherButton.scrollIntoView({block:"start"});
     }else{
       // If any other drink button is displayed, then determine what
       // options need to be displayed with it.
@@ -644,6 +645,9 @@ export default class extends Controller {
         });
       }  
       this.makeDrinkDescription();
+      // scroll back to the top of the buttons so that the options are visible.
+      //const box = this.selectDrinksTitleTarget;
+      this.selectDrinksTitleTarget.scrollIntoView({block:"end"});
     }
   }  
 
