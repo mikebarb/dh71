@@ -13,6 +13,7 @@
       <%= form.hidden_field :id, value:"", :data => { :filter_target => 'requestPersonId1' } %>
       <% # form.text_area :name, size: "40x1", class:"hidden", :data => { :filter_target => 'addPersonName' }, autocomplete:"off" %>
       <%= form.text_area :name, size: "40x1", :data => { :filter_target => 'addPersonName', :action => "keyup->filter#checkExistingNames" }, autocomplete:"off" %>
+      <p data-filter-target="personExistsMessage" class="hidden">This person is already present</p>
       <% # form.submit "New Person", hidden: :true, class:"m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
       <%= form.submit "Add this Name", class:"hidden m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
     <% end %>

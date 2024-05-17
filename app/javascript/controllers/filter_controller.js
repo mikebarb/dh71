@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["requestNotice", "requestNoticePerson", "filterText", "person", "requestPersonId", "requestName",
                     "requestDrink", "addPersonName", "requestPersonId1", "addPersonButton",
                     "button", "submitOrder", "submitCancel", "people", "people1", "requestSection",
-                    "buttonSection", "filterSection", "addPerson", "addPersonPanelButton"]
+                    "buttonSection", "filterSection", "addPerson", "addPersonPanelButton", "personExistsMessage"]
   
   connect() {
     console.log("filter_controller connected", this.element);
@@ -78,9 +78,11 @@ export default class extends Controller {
     const elePeople = this.peopleTarget;
     const eleAddPerson = this.addPersonTarget;
     const eleAddPersonButton = this.addPersonButtonTarget;
+    const elePersonExistsMessage = this.personExistsMessageTarget;
     eleFilter.classList.remove("hidden");
     elePeople.classList.remove("hidden");
     eleAddPerson.classList.add("hidden");
+    elePersonExistsMessage.classList.add("hidden");
   }
      
  // called when there is a turboframe update on this page.
@@ -90,7 +92,7 @@ export default class extends Controller {
   //              also is not the turbo-frame element.
   onUpdate(element){
     console.log("onUpdate called");
-    console.log("element: ", element);
+    //console.log("element: ", element);
     // key decision making info about this element
     const elementPersonId    = element.getAttribute("data_person_id");                 // record id of person
     const elementStatus      = element.getAttribute("data_order_status");              // status of last order
@@ -99,31 +101,20 @@ export default class extends Controller {
     //const lastListedPerson   = this.peopleTarget.lastElementChild.lastElementChild;    
     var   noticePerson       = this.requestNoticePersonTarget.textContent;      // response to add person form submit
     var   noticeOrder        = this.requestNoticeTarget.textContent;            // response to submit/cancel order form submit
-    console.log("noticePerson: ", noticePerson);         
-    console.log("noticeOrder: ", noticeOrder);
+    //console.log("noticePerson: ", noticePerson);         
+    //console.log("noticeOrder: ", noticeOrder);
     
     //console.log("lastListedPerson: ", lastListedPerson);
-    console.log("elementPersonId: ", elementPersonId);
-    console.log("personSelected : ", personSelected);
-    console.log("elementStatus : ", elementStatus);
-    // Determine if the user requested this is a person added
-    // to the page (addPerson invoked)
-    //if((lastListedPerson.getAttribute("data_person_id") == elementPersonId)){
-    //console.log("last listed person");
-    // See if this page is updated from an addPerson call
-    // There is a response in the notices - includes id of person added.
-    //const notice = this.requestNoticePersonTarget;
-    //console.log("notice: ", notice);
-    //var noticeText = notice.textContent;
-    //console.log("noticeText: ", noticeText);     
+    //console.log("elementPersonId: ", elementPersonId);
+    //console.log("personSelected : ", personSelected);
+    //console.log("elementStatus : ", elementStatus);
     if(noticePerson != ""){
-      console.log("noticeText has something ", noticePerson);
+      //console.log("noticeText has something ", noticePerson);
       var localAddedPersonId = noticePerson.match(/(\d+)/)[1]; 
-      console.log("localAddedPersonId: ", localAddedPersonId);
+      //console.log("localAddedPersonId: ", localAddedPersonId);
       // see if this screen added this person
       if(elementPersonId == localAddedPersonId){
         // then select this person as if someone click to select person
-        //var flagThisScreenAddedPerson = true;
         this.selectPersonWithNode(element.firstElementChild);
       }
     }
@@ -133,32 +124,22 @@ export default class extends Controller {
     // Update generally trigered by status change for a person.
     if (elementPersonId == personSelected){
       // need to highlight this entry again indicating it is selected
-      console.log("redo the format")
+      //console.log("redo the format")
       //This looks VERY CONVOLUTED - but is a workaround to
       // an append problem.
       // In append, updating classes on the attached dom element
       // didn't work.
       // The workaround is to get the dom again directly from the 
       // document, and update the classes in that.
-      //**var parentNode = personNode.parentNode;
-      //**var parentNodeId = parentNode.id;
       var parentNodeId = element.id;
       var parentNode = document.getElementById(parentNodeId);
-      //***************** */
       parentNode.classList.remove(this.person_bg);
       parentNode.classList.add(this.person_bg_selected);
-      //parentNode.getElementsByTagName("div")[this.checkIndex].classList.remove("hidden");
-      //parentNode.getElementsByTagName("div")[this.boxIndex].classList.add("hidden");
       element.classList.remove(this.person_bg);
       element.classList.add(this.person_bg_selected);
       // if status is new, and this is from the server, then need to
       // update the description to match the last drink.
       if(elementStatus == "new" || elementStatus == "cancelled" ){
-        //this.requestDrinkTarget.value = element.getAttribute("data_order_drink");
-        //const personSelected   = this.peopleTarget.getAttribute("data_person_selected");
-        // Deselect the person.
-        ////this.deselectAllPeople();
-        ////this.peopleTarget.setAttribute("data_person_selected", "");
         this.populateRequestForm(element.firstElementChild);
         this.initialiseButtons();
       }
@@ -168,12 +149,16 @@ export default class extends Controller {
   }
 
   showAddPerson(){
+    console.log("showAddPerson called.")
     const eleAddPerson = this.addPersonTarget;
     const eleFilterSection = this.filterSectionTarget;
     const elePeople = this.peopleTarget;
     eleAddPerson.classList.remove("hidden");
     eleFilterSection.classList.add("hidden");
     elePeople.classList.add("hidden");
+    // act as if a key was pressed in the text field
+    // This shows/hides all the fileds and buttons correctly.
+    this.checkExistingNames();
   }
 
   selectPerson(){
@@ -181,7 +166,7 @@ export default class extends Controller {
     // make sure there are people to process
     // get the element that made this call
     const personNode = event.currentTarget;
-    console.log("personNode: ", personNode);
+    //console.log("personNode: ", personNode);
     this.selectPersonWithNode(personNode);
   }
   //--------------------------------------------------------------
@@ -253,8 +238,6 @@ export default class extends Controller {
       node.classList.remove(this.person_bg_selected);
       node.classList.add(this.person_bg);
       node.classList.remove("hidden");
-      //node.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
-      //node.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
     });
   }
 
@@ -270,9 +253,6 @@ export default class extends Controller {
       [...allPeople].forEach(node=>{
         if(thisSelectedPersonId != node.getAttribute("data_person_id")){  // selected person
           node.classList.add("hidden");
-          //node.getElementsByTagName("div")[this.checkIndex].classList.add("hidden");
-          //node.getElementsByTagName("div")[this.boxIndex].classList.remove("hidden");
-          //node.scrollToTop;
           window.scrollTo(0, 0);
         }
       });
@@ -297,11 +277,6 @@ export default class extends Controller {
     var parentNode = document.getElementById(parentNodeId);
     parentNode.classList.remove(this.person_bg);
     parentNode.classList.add(this.person_bg_selected);
-    //parentNode.getElementsByTagName("div")[this.checkIndex].classList.remove("hidden");
-    //parentNode.getElementsByTagName("div")[this.boxIndex].classList.add("hidden");
-
-    //personNode.parentNode.classList.remove(this.person_bg);
-    //personNode.parentNode.classList.add(this.person_bg_selected);
     // and record what person is selected - put data into people header
     const thisPersonId = personNode.parentNode.getAttribute("data_person_id");
     peopleInfo.setAttribute("data_person_selected", thisPersonId);
@@ -360,7 +335,6 @@ export default class extends Controller {
     const buttonSection      = this.buttonSectionTarget;
     const filterSection      = this.filterSectionTarget;
     const newPersonButton    = this.addPersonButtonTarget;
-    console.log("newPersonButton");
     const buttonSubmitOrder  = this.submitOrderTarget;
     const buttonSubmitCancel = this.submitCancelTarget; 
     if(personSelected){
@@ -425,8 +399,7 @@ export default class extends Controller {
     // get the button that need to be displayed or hidden - addPersonName
     //const addPersonButton = this.addPersonButtonTarget
     const addPersonButton = this.addPersonButtonTarget;
-    console.log("addPersonButton", addPersonButton);
-
+    const personExistsMessage = this.personExistsMessageTarget;    
     // ensure there are people on the page
     if(this.hasPersonTarget) {
       // As there are people, set canAddName to allow adding another
@@ -435,11 +408,7 @@ export default class extends Controller {
 
       // get an array of all the person nodes containing each person
       const allPeople  =  this.personTargets;
-      //console.log(allPeople);
-
-      //const allButtons  =  this.buttonTargets;
-      //console.log(allButtons);
-  
+      //console.log(allPeople);  
       // step through each person, hiding or showing person node based on a filter match
       [...allPeople].forEach(node=>{
         // Check if this person is an exact match
@@ -451,35 +420,27 @@ export default class extends Controller {
       });
       if(canAddName){
         //this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
-        //addPersonButton.hidden = false;
         addPersonButton.classList.remove("hidden");
+        personExistsMessage.classList.add("hidden");
       }else{
         //this.addPersonNameTarget.value = "";
-        //addPersonButton.hidden = true;
         addPersonButton.classList.add("hidden");
+        personExistsMessage.classList.remove("hidden");
       }
       if(nameText.trim().length == 0){
-        //addPersonButton.hidden = true;
         addPersonButton.classList.add("hidden");
+        personExistsMessage.classList.add("hidden");
       }
-      //if(selectedPersonId != 0){
-      //  var selectedPersonElement = document.getElementById("person_" + selectedPersonId);
-      //  selectedPersonElement.scrollIntoView();
-      //}
-
+    
     }else{     // no names on the page - only happens on app/db initialisation
       // As there are no people, can always add the name.
       //this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
       if(nameText.trim().length != 0){
-        //addPersonButton.hidden = false;
         addPersonButton.classList.remove("hidden");
       }
     }
     console.log("addPersonButton", addPersonButton);
   };
-
-
-
 
   //---------------------------------------------------------------
   // Filters all the people by name 
@@ -498,9 +459,7 @@ export default class extends Controller {
     
     // who is the current selected person (id)
     var selectedPersonId = this.peopleTarget.getAttribute("data_person_selected");
-    console.log("selectedPersonId: ", selectedPersonId);
     if(selectedPersonId == ""){
-      console.log("selectedPersonId is blank");
       selectedPersonId = 0;   // a value never exists in reality - activeRecord id value
     }
     // initialise canAddName - default to prevent adding a person
@@ -510,21 +469,13 @@ export default class extends Controller {
     // get the button that need to be displayed or hidden - addPersonName
     //const addPersonButton = this.addPersonButtonTarget
     const addPersonButton = this.addPersonPanelButtonTarget;
-    console.log("addPersonButton", addPersonButton);
-
     // ensure there are people on the page
     if(this.hasPersonTarget) {
       // As there are people, set canAddName to allow adding another
       // person unless we find an exact match.
       canAddName = true
-
       // get an array of all the person nodes containing each person
-      const allPeople  =  this.personTargets;
-      //console.log(allPeople);
-
-      //const allButtons  =  this.buttonTargets;
-      //console.log(allButtons);
-  
+      const allPeople  =  this.personTargets;  
       // step through each person, hiding or showing person node based on a filter match
       [...allPeople].forEach(node=>{
         if (node.getAttribute('data_name').toLowerCase().includes(filterText)) {
@@ -554,10 +505,6 @@ export default class extends Controller {
         //addPersonButton.hidden = true;
         addPersonButton.classList.add("hidden");
       }
-      ////if(this.filterTextTarget.value.trim().length == 0){
-        //addPersonButton.hidden = true;
-      ////  addPersonButton.classList.add("hidden");
-      ////}
       if(selectedPersonId != 0){
         var selectedPersonElement = document.getElementById("person_" + selectedPersonId);
         selectedPersonElement.scrollIntoView();
@@ -567,7 +514,6 @@ export default class extends Controller {
       // As there are no people, can always add the name.
       this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
       if(this.filterTextTarget.value.trim().length != 0){
-        //addPersonButton.hidden = false;
         addPersonButton.classList.remove("hidden");
       }
     }
@@ -655,8 +601,6 @@ export default class extends Controller {
     // is it selected?
     var drinkCurrent  = buttonNode.classList.contains("selected");
     var drinkCategory = ("Drink" == buttonNode.getAttribute("data-category")); 
-    console.log("drinkCurrent:  ", drinkCurrent);
-    console.log("drinkCategory: ", drinkCategory);
     // reset all drink buttons to not show
     this.initialiseButtons();
 
@@ -754,10 +698,8 @@ export default class extends Controller {
     const allButtons  =  this.buttonTargets;
     // If other drink is selected, then just pick up that description.
     const iEle = document.getElementById("other");
-    //if(iEle.classList.contains("text-white")){
     if(iEle.classList.contains("selected")){
       description = document.getElementById("otherInput").value;
-      //this.requestDrinkTarget.value = description.trim();
       this.setRequestDrink(description.trim());
       return;
     }
@@ -769,22 +711,11 @@ export default class extends Controller {
     });
     //place into the field ready for ordering drinks
     this.setRequestDrink(description.trim());
-    ////var desc = description.trim();
-    ////this.requestDrinkTarget.value = desc;
-    // if nothing in there, disable the Submit Order button.
-    ////if(desc.length == 0){
-    ////  const buttonSubmitOrder  = this.submitOrderTarget;
-    ////  buttonSubmitOrder.classList.add("invisible");
-    ////}else{
-    ////  this.submitOrderTarget.classList.remove("invisible");
-    ////}
   }
 
   setRequestDrink(desc){
     this.requestDrinkTarget.value = desc;
     if(desc.length == 0){
-      //const buttonSubmitOrder  = this.submitOrderTarget;
-      //buttonSubmitOrder.classList.add("invisible");
       this.submitOrderTarget.classList.add("invisible");
     }else{
       this.submitOrderTarget.classList.remove("invisible");
