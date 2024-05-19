@@ -11,24 +11,28 @@
       <div id="top_container" class="sticky top-0 w-full flex flex-col">
         <p class="bg-orange-500"><%= notice %></p>
         <!-- The header for the store front page, include the navigation buttons to the brewster page -->
-        <section id="page_header" class="max-sm:hidden relative bg-white w-full flex flex-nowrap">
-          <div class="m-4 bg-white text-black text-lg font-extrabold  text-center flex place-content-stretch">Store Front</div>
+        <!-- <section id="page_header" class="max-sm:hidden relative bg-white w-full flex flex-nowrap"> -->
+          <section id="page_header" class="relative bg-indigo-900 w-full flex flex-nowrap">
+          <div class="m-4 text-white text-lg font-extrabold  text-center flex place-content-stretch">GCC Drink Ordering App</div>
           <nav class="bg-white">
             <ul class="absolute right-0 flex place-content-center">
-              <li class="p-2 m-2 bg-blue-300 hover:border-2 rounded-full border-blue-800"><%= link_to "Brewster", stores_brewster_path %></li>
+              <li class="max-sm:hidden p-2 m-2 bg-blue-300 hover:border-2 rounded-full border-blue-800"><%= link_to "Brewster", stores_brewster_path %></li>
             </ul>
           </nav>
         </section>
         <!-- section filterSection - this displays the filter functionally +
              displays the addPerson button when appropiate.
              Note: addPerson is a separate template, as it get dynamically updated from server. -->
-        <section id="filter_section" class="bg-indigo-900 flex" data-filter-target="filterSection" >
-          <div class="self-center flex-col">
-            <button data-action="click->filter#showAddPerson" data-filter-target="addPersonPanelButton" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded rounded-md border border-width-1 border-blue-100">Add Another Name</button>
+        <section id="filter_section" class="bg-indigo-100 flex" data-filter-target="filterSection" >
+          <div class="text-orange-600 self-center flex-col">
+            <p class="text-black">Select your name below:</p>
             <div class="flex flex-row">
-              <span class="fas fa-search fa-lg p-3 text-center text-white self-center border-indigo-950 border-s-2 border-y-2"></span>
-              <input id="filterText" data-filter-target="filterText" class="w-5/6 bg-white text-base border-indigo-950 border-2 focus:border-black focus:border-4 focus:border-double" data-action="keyup->filter#changeFilterText" type="text" placeholder="filter names" autocomplete="off">
+              <span class="h-8 fas fa-search fa-lg p-3 text-center text-indigo-900 self-center border-indigo-950 border-s-2 border-y-2"></span>
+              <input id="filterText" data-filter-target="filterText" class="h-8 w-5/6 bg-white text-base text-black border-indigo-900 border-2" data-action="keyup->filter#changeFilterText" type="text" placeholder="Search name" autocomplete="off">
             </div>  
+            <span>New here? </span>
+            <span data-action="click->filter#showAddPerson" data-filter-target="addPersonPanelButton" class="underline font-bold">Click Here</span>
+            <span> to add yourself.</span>
           </div>
         </section>
         <!-- Section addPerson - this includes the form that enables a person to be added -->

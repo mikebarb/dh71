@@ -5,7 +5,6 @@
     <% else %>
         <div id="flashNoticePerson" data-filter-target='requestNoticePerson' style="color: red"><%= flash.alert %></div>
     <% end %>
-    <button data-action="click->filter#backToPeople" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back to People Selection</button>
     <div>
       Please key in your full name.
     </div>
@@ -17,4 +16,5 @@
       <% # form.submit "New Person", hidden: :true, class:"m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
       <%= form.submit "Add this Name", class:"hidden m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
     <% end %>
+    <button data-action="click->filter#backToPeople" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back to People Selection</button>
   </turbo-frame>
