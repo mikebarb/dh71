@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mission Support Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #bmiUI, #aimUI, #mafUI, #helpUI {
+        background-color: #fff;
+        border: 2px solid #fff;
+        border-radius: 3px;
+        box-shadow: 0 2px 6px rgba(0,0,0,.3);
+        cursor: pointer;
+        float: left;
+        margin-bottom: 22px;
+        text-align: center;
+      }
+      #bmiText, #aimText, #mafText, #helpText {
+        color: rgb(25,25,25);
+        font-family: Roboto,Arial,sans-serif;
+        font-size: 15px;
+        line-height: 25px;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      #bmiUI, #helpUI {
+        margin-left: 12px;
+      }
+
+      .map-icon-label .map-icon {
+      	font-size: 24px;
+      	color: #FFFFFF;
+      	line-height: 48px;
+      	text-align: center;
+      	white-space: nowrap;
+      }
+
+
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      // Common variables
+      /* global google */
+      /* global location */
+      var hostname = location.hostname;
+      var map;
+
+      var bmi = [
+                      ['Ginninderra Christian Church, Canberra', -35.20492423938096, 149.02797845543097, 4, 'www.gcc.org.au', null, 'bmi_cross_ind'],
+                      ['Tamar Valley Christian Church, Exeter',  -41.29101996017232, 146.94239593731018, 5, 'www.bmi.org.au/?page=churches&subpage=tas', null, 'bmi_cross_ind'],
+                      ['Hilltop Christian Church, Scottsdale', -41.16023151723848, 147.5161143032273, 3, 'www.bmi.org.au/?page=churches&subpage=tas', null, 'bmi_cross_ind'],
+                      ['Cornerstone Family Church, George Town', -41.10549869825353, 146.83109250563112, 2, 'www.cornerstone-georgetown-tas.org.au', null, 'bmi_cross_ind'],
+                      ['Southern Life Church, Moruya', -35.92158977656944, 150.08508938394831, 1, 'www.southernlife.org.au', null, 'bmi_cross_ind' ],
+                      ['Grace Outreach Assemblies, Fairfield', -33.869586, 150.953710, 4, 'bmi.org.au/?page=churches&subpage=nsw', null, 'bmi_cross_ind'],
+                      ['Highlands Christian Church, Mittagong', -34.451818, 150.447430, 5, 'bmi.org.au/?page=churches&subpage=nsw', null, 'bmi_cross_ind'],
+                      ['His House Church, Picton', -34.190896, 150.600214, 3, 'www.hishouse.org.au', null, 'bmi_cross_ind'],
+                      ['New Covenant Church, Nowra', -34.875715, 150.600615, 2, 'bmi.org.au/?page=churches&subpage=nsw', null, 'bmi_cross_ind'],
+                      ['Elijah Restoration Ministries and Communities, Safety Beach', -38.313705, 144.994301, 1, 'bmi.org.au/?page=churches&subpage=vic', null, 'bmi_cross_ind'],
+                      ['House of the Rock Church, Gisborne', -37.461869, 144.596826, 4, 'www.hotrock.org.au', null, 'bmi_cross_ind'],
+                      ['Open Door Christian Church, Cheltenham', -37.963922, 145.056159, 5, 'www.odcc.org.au', null, 'bmi_cross_ind'],
+                      ['Mt Gambier Christian Centre', -37.812271, 140.774375, 3, 'www.mgcc.org.au', null, 'bmi_cross_ind'],
+                      ['Northern Highlands Christian Outreach, Jamestown', -33.210844, 138.605401, 2, 'bmi.org.au/?page=churches&subpage=sa', null, 'bmi_cross_ind'],
+                      ['BMi India', 16.996251707363946, 81.78585219427201, 1, 'bmi.org.au/?page=churches&subpage=int', null, 'bmi_cross'],
+                      ['BMi Philippines', 10.672545, 122.953644, 4, 'bmi-mpfg.weebly.com/', null, 'bmi_cross'],
+                      ['BMi Africa', -2.859774, 29.014288, 5, 'mhcdafrica.com', null, 'bmi_cross'],
+                      ['UK', 50.34385769463107, -4.764047464315353, 3, 'bmi.org.au/?page=churches&subpage=int', null, 'bmi_cross_ind'],
+                      ['Germany', 52.55171013697581, 13.416825802306658, 2, 'bmi.org.au/?page=churches&subpage=int', null, 'bmi_cross_ind'],
+                      ['Vanuatu', -15.37681888842982, 167.80605753067402, 1, 'bmi.org.au/?page=churches&subpage=int', null, 'bmi_cross_ind']
+                     ];
+ 
+      var aim = [
+                      ['Brewarrina', -29.961309183854056, 146.8583693225357, 4, 'australianindigenousministries.org.au/brewarrina', null, 'aim_cross'],
+                      ['Wagett', -30.026239191535236, 148.11179552411554 , 4, null, null, 'aim_cross_ind'],
+                      ['Across The Divide', -31.939097556453948, 152.45234488881204, 5, 'acrossthedivide.com.au', null, 'aim_bus'],
+                      ['Moree', -29.473745274770405, 149.83711180386956, 4, 'ephraimhouse.org', null, 'aim_cross'],
+                      ['Barunga', -14.222173, 132.859084, 4, 'australianindigenousministries.org.au/barunga', null, 'aim_cross_ind'],
+                      ['Elliott', -17.551342, 133.544544, 4, 'australianindigenousministries.org.au/elliott-marlinja', null, 'aim_cross_ind'],
+                      ['Katherine', -14.452652, 132.271176, 4, null, null, 'aim_cross_ind'],
+                      ['Canteen Creek', -20.639041, 135.586082, 4, 'australianindigenousministries.org.au/canteen-creek', null, 'aim_cross_ind'],
+                      ['Borroloola', -16.065611, 136.307244, 4, 'australianindigenousministries.org.au/borroloola/', null, 'aim_cross_ind'],
+                      ['Camooweal', -19.915650, 138.120070, 4, null, null, 'aim_cross_ind'],
+                      ['Inala', -27.591991, 152.969579, 4, null, null, 'aim_cross_ind'],
+                      ['Gilgandra', -31.664210, 148.655458, 4, 'australianindigenousministries.org.au/gilgandra', null, 'aim_cross_ind'],
+                      ['Woorabinda', -24.127236, 149.449487, 4, null, null, 'aim_cross_ind'],
+                      ['Tennant Creek', -19.654523, 134.182582, 4, 'australianindigenousministries.org.au/tennant-creek', null, 'aim_cross_ind'],
+                      ['Darwin', -12.387959028601585, 130.8556606652218, 4, 'australianindigenousministries.org.au/darwin', null, 'aim_cross_ind'],
+                      ['Alice Springs', -23.704378666099494, 133.86816004641693, 4, 'australianindigenousministries.org.au/alice-springs', null, 'aim_cross_ind'],
+                      ['Cherbourg', -26.291764, 151.954465, 4, 'australianindigenousministries.org.au/cherbourg', null, 'aim_cross_ind'],
+                      ['Dubbo', -32.245587, 148.598417, 4, 'australianindigenousministries.org.au/dubbo', null, 'aim_cross_ind'],
+                      ['Taree', -31.91069987382538, 152.44912151877952, 4, 'australianindigenousministries.org.au/taree', null, 'aim_cross_ind'],
+                      ['Hazelbrook', -33.727908, 150.451873, 4, 'australianindigenousministries.org.au/hazelbrook', null, 'aim_person_ind'],
+                      ['Cootamundra', -34.641425, 148.024882, 4, 'australianindigenousministries.org.au/cootamundra', null, 'aim_person_ind'],
+                    ];
+
+      var maf = [
+                      ['Arnhem Land', -12.268540792197895, 136.8240237573253, 4, 'maf.org.au/countries/arnhem-land/', null, 'mafPlane'],
+                      ['Papua and New Guinea', -5.828293405522209, 144.29559427281276, 4, 'maf-papuanewguinea.org/',null, 'mafPlane'],
+                      ['Timor-Leste', -8.549133891177107, 125.52312174944335, 4, 'maf.org.au/countries/timor-leste/', null, 'mafPlane'],
+                      ['Bangladesh',  23.81376612365984, 90.41333572672036, 4, 'maf.org.au/countries/bangladesh/', null, 'mafPlane'],
+                      ['Mareeba',  -17.070690040750744, 145.43235190272034, 4, 'maf.org.au/countries/mareeba/', null, 'mafMaint'],
+                      ['Cairns',  -16.92318936958071, 145.77023401310893, 3, 'maf.org.au/location/cairns-qld/', null, 'mafHq'],
+                      ['Madagascar',  -18.798846142645555, 47.470230262308895, 4, 'maf.org.au/countries/madagascar/', null, 'mafPlane'],
+                      ['Kenya', -1.320000, 36.815000 , 4, 'maf.org.au/countries/kenya/', null, 'mafPlane'],
+                      ['Uganda',  0.1955530126690388, 32.55250385035227, 4, 'maf.org.au/countries/uganda/', null, 'mafPlane'],
+                      ['South Sudan', 4.863952, 31.601622, 4, 'maf.org.au/countries/south-sudan/', null, 'mafPlane'],
+                      ['Liberia',  6.243345, -10.352870, 4, 'maf.org.au/countries/liberia/', null, 'mafPlane'],
+                ];
+
+
+
+      // Set up the user required (non-default) control buttons at the top of the map.
+      function CenterControl(controlDiv, map, center) {
+        // We set up a variable for this since we're adding event listeners
+        // later.
+        var control = this;
+
+        // Set CSS for the BMI control border
+        var bmiUI = document.createElement('div');
+        bmiUI.id = 'bmiUI';
+        bmiUI.title = 'Show or Hide BMI Churches, dbl click to open web site';
+        controlDiv.appendChild(bmiUI);
+
+        // Set CSS for the BMI control interior
+        var bmiText = document.createElement('div');
+        bmiText.id = 'bmiText';
+        bmiText.style.background = '#4da6ff';   // ffff4d  #80dfff
+        bmiText.innerHTML = 'BMI';
+        bmiUI.appendChild(bmiText);
+
+	      // Set CSS for the AIM control border
+        var aimUI = document.createElement('div');
+        aimUI.id = 'aimUI';
+        aimUI.title = 'Show or Hide AIM locations, dbl click to open web site';
+        controlDiv.appendChild(aimUI);
+
+        // Set CSS for the AIM control interior
+        var aimText = document.createElement('div');
+        aimText.id = 'aimText';
+        aimText.style.background = '#cc5605';    // ff4d4d    #cc6600
+        aimText.innerHTML = 'AIM';
+        aimUI.appendChild(aimText);
+
+	      // Set CSS for the MAF control border
+        var mafUI = document.createElement('div');
+        mafUI.id = 'mafUI';
+        mafUI.title = 'Show or Hide MAF locations, dbl click to open web site';
+        controlDiv.appendChild(mafUI);
+
+        // Set CSS for the MAF control interior
+        var mafText = document.createElement('div');
+        mafText.id = 'mafText';
+        mafText.style.background = '#c90032';    // 0099ff  #993366
+        mafText.innerHTML = 'MAF';
+        mafUI.appendChild(mafText);
+
+	      // Set CSS for the Help control border
+        var helpUI = document.createElement('div');
+        helpUI.id = 'helpUI';
+        helpUI.title = 'Display help information';
+        controlDiv.appendChild(helpUI);
+
+        // Set CSS for the Help control interior
+        var helpText = document.createElement('div');
+        helpText.id = 'helpText';
+        helpText.style.background = '#FFFFFF';
+        helpText.innerHTML = 'Info';
+        helpUI.appendChild(helpText);
+
+
+       // Set up the click event listener for 'bmi': 
+        // Show or hide markers of all the bmi churches.
+        bmiUI.addEventListener('click', function() {
+      	  for (var i = 0; i < bmi.length; i++) {
+                  var churchmarker = bmi[i][5];
+      	    if (churchmarker.getVisible()){
+      	      churchmarker.setVisible(false);
+      	    }else{
+      	      churchmarker.setVisible(true);
+      	    }
+          }	  
+        });  
+
+      	// Show BMI home page by double clicking
+      	bmiUI.addEventListener('dblclick', function() {
+      	  var fullurl = "http://" + 'bmi.org.au';
+      	  var win = window.open(fullurl, '_blank');
+              win.focus();
+        });  
+
+        // Set up the click event listener for 'aim': 
+        // Show or hide markers of all the aim churches.
+        aimUI.addEventListener('click', function() {
+      	  for (var i = 0; i < aim.length; i++) {
+            var churchmarker = aim[i][5];
+      	    if (churchmarker.getVisible()){
+      	      churchmarker.setVisible(false);
+      	    }else{
+      	      churchmarker.setVisible(true);
+      	    }
+          }	  
+        });
+
+      	// Show AIM home page by double clicking
+      	aimUI.addEventListener('dblclick', function() {
+      	  var fullurl = "http://" + 'australianindigenousministries.org.au/';
+      	  var win = window.open(fullurl, '_blank');
+          win.focus();
+        });  
+
+        // Set up the click event listener for 'maf': 
+        // Show or hide markers of all the aim churches.
+        mafUI.addEventListener('click', function() {
+      	  for (var i = 0; i < maf.length; i++) {
+            var churchmarker = maf[i][5];
+      	    if (churchmarker.getVisible()){
+      	      churchmarker.setVisible(false);
+      	    }else{
+      	      churchmarker.setVisible(true);
+      	    }
+          }	  
+        });
+
+      	// Show MAF home page by double clicking
+      	mafUI.addEventListener('dblclick', function() {
+      	  var fullurl = "http://" + 'maf.org.au/';
+      	  var win = window.open(fullurl, '_blank');
+          win.focus();
+        });  
+
+        // Set up the click event listener for 'help': 
+        // Display help page.
+        helpUI.addEventListener('click', function() {
+      	  var fullurl = "http://" + hostname + '/maphelp.html';
+      	  var win = window.open(fullurl, '_blank');
+          win.focus();
+        });
+
+      }
+
+      /***************************************************************************
+	     * Initialise the map
+      */
+
+    	function initMap() {
+      	//myCenter = new google.maps.LatLng( -35.20492423938096, 149.02797845543097); 
+              var mapCentre = {lat: 0, lng: 87};
+      	map = new google.maps.Map(document.getElementById('map'), {
+                center: mapCentre,
+                zoom: 2.8
+      	});
+    
+
+        var callProt = 'http://';
+        var icons = {
+        	  churchA_old: {
+        		  icon: callProt + 'maps.google.com/mapfiles/kml/paddle/purple-blank.png'
+        	  },
+        	  churchA_mike: {
+        		  icon:  callProt + hostname + '/images/icon_aim_church.png'
+        	  },
+        	  aim_cross: {
+        		  icon:  callProt + hostname + '/images/AIM_cross.png'
+        	  },
+        	  aim_cross_ind: {
+        		  icon:  callProt + hostname + '/images/AIM_cross_ind_2.png'
+        	  },
+        	  church2: {
+        		  icon: callProt + 'maps.google.com/mapfiles/kml/pal2/icon3.png'
+        	  },
+        	  support_old: {
+        	  	  icon:  callProt + 'maps.google.com/mapfiles/kml/paddle/purple-stars.png'
+        	  },
+        	  support_mike: {
+        	  	  icon:  callProt + hostname + '/images/icon_aim_support.png'
+        	  },
+        	  aim_person_ind: {
+        	  	  icon:  callProt + hostname + '/images/AIM_person_ind_2.png'
+        	  },
+        	  bus_mike: {
+        	  	  icon:  callProt + 'maps.google.com/mapfiles/kml/pal4/icon7.png'
+        	  },
+        	  aim_bus: {
+        	  	  icon:  callProt + hostname + '/images/AIM_bus_2.png'
+        	  },
+        	  churchB_old: {
+        		  icon: callProt + 'maps.google.com/mapfiles/kml/paddle/blu-blank.png'
+        	  },
+        	  churchB_mike: {
+        	  	  icon:  callProt + hostname + '/images/icon_bmi_church.png'
+        	  },
+        	  bmi_cross: {
+        	  	  icon:  callProt + hostname + '/images/BMi_cross.png'
+        	  },
+        	  bmi_cross_ind: {
+        	  	  icon:  callProt + hostname + '/images/BMi_cross_ind_2.png'
+        	  },
+        	  plane_mike: {
+        		  icon: callProt + hostname + '/images/icon_maf_plane.png'
+        	  },
+        	  mafPlane: {
+        		  icon: callProt + hostname + '/images/MAF_plane.png'
+        	  },
+        	  mafMaint: {
+        		  icon: callProt + hostname + '/images/MAF_cog.png'
+        	  },
+        	  mafHq: {
+        		  icon: callProt + hostname + '/images/MAF_hq.png'
+        	  },
+
+        };
+
+        //** Good reference **//
+      	//https://stackoverflow.com/questions/24413766/how-to-use-svg-markers-in-google-maps-api-v3
+      
+        /* 
+         * Set up the control buttons
+         */
+        // Create the DIV to hold the control and call the CenterControl()
+        // constructor
+        // passing in this DIV.
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map, mapCentre);
+    
+        centerControlDiv.index = 1;
+        centerControlDiv.style['padding-top'] = '10px';
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv);
+        
+        /* 
+         * Set up the map markers showing the location of the churches
+         * and also the event listeners on these markers.
+         */
+        // Add BMI markers
+        for (var i = 0; i < bmi.length; i++) {
+          var church = bmi[i];
+          var fullurl = "https://" + church[4];
+          var churchmarker = new google.maps.Marker({
+            position: {lat: church[1], lng: church[2]},
+            map: map,
+            title: church[0],
+            zIndex: church[3],
+      	    url: fullurl,
+      	    temp: false,
+      	    //label: 'B',
+      	    icon: icons[church[6]].icon
+        });
+        church[5] = churchmarker;
+        google.maps.event.addListener(churchmarker, 'dblclick', function() {
+          if(this.url != null ){
+            var win = window.open(this.url, '_blank');
+                  win.focus();
+          }
+        });
+    	}
+    
+      // Add AIM markers
+      for ( i = 0; i < aim.length; i++) {
+        church = aim[i];
+        fullurl = callProt + church[4];
+        churchmarker = new google.maps.Marker({
+          position: {lat: church[1], lng: church[2]},
+          map: map,
+          title: church[0],
+          zIndex: church[3],
+    	    url: fullurl,
+    	    temp: false,
+    	    visible: false,
+    	    //label: 'A',
+    	    icon: icons[church[6]].icon
+        });
+        church[5] = churchmarker;
+        google.maps.event.addListener(churchmarker, 'dblclick', function() {
+          if(this.url != null ){
+            console.log(this.url);
+            var win = window.open(this.url, '_blank');
+                  win.focus();
+          }
+        });
+    	}
+
+      // Add MAF markers
+      for ( i = 0; i < maf.length; i++) {
+        church = maf[i];
+        fullurl = callProt + church[4];
+        churchmarker = new google.maps.Marker({
+          position: {lat: church[1], lng: church[2]},
+          map: map,
+          title: church[0],
+          zIndex: church[3],
+    	    url: fullurl,
+    	    temp: false,
+    	    visible: false,
+    	    //label: 'A',
+    	    icon: icons[church[6]].icon
+        });
+        church[5] = churchmarker;
+        google.maps.event.addListener(churchmarker, 'dblclick', function() {
+          if(this.url != null ){
+            console.log(this.url);
+            var win = window.open(this.url, '_blank');
+                  win.focus();
+          }
+        });
+    	}
+    
+    	// This event listener will place a marker in the right clicked on postion
+    	// and display the lat lng.
+      google.maps.event.addListener(map, 'rightclick', function(event) {
+    	  placeMarker(map, event.latLng);
+      });
+    
+    }
+    /* 
+     * End of init
+     ****************************************************************************/
+    
+    // the right click on the map event listener calls this function.
+    // Event listener is setup in the intiMap function.
+    function placeMarker(map, location) {
+      var eventmarker = new google.maps.Marker({
+        position: location,
+        map: map,
+    	  title: "tempory marker"
+      });
+      var eventinfowindow = new google.maps.InfoWindow({
+        content: 'Latitude/Longitude: ' + location.lat() + ', ' + location.lng()
+      });
+      eventinfowindow.open(map,eventmarker);
+    	// need to listen for right click on this marker - in order to remove it
+    	google.maps.event.addListener(eventmarker, 'rightclick', function() {
+    	  console.log(this.temp);
+        this.setMap(null);
+    	});
+    }
+    
+    // Open a url in a new tab if the browser allows it
+    // popup blocking can prevent it
+    // browser settings may force a new window rather than a tab.
+//    function openInNewTab(url) {
+//      console.log(url);
+    	  //var win = window.open(url, '_blank');
+            //win.focus();
+//    	window.open(url);
+//    }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3dy_0XO5zF4lDZQ3L1oAthR96RNPKyM8&callback=initMap" async defer></script>
+   
+  </body>
+</html>
