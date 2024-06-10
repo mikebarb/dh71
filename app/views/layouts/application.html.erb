@@ -10,9 +10,11 @@
     <script src="https://kit.fontawesome.com/b383bd8104.js" crossorigin="anonymous"></script>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>    
     <%= javascript_importmap_tags %>
-  </head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">  </head>
 
-  <body class="min-h-screen bg-zinc-100">
+  <body class="min-h-screen font-primary bg-slate-100">
     <main>
       <%= yield %>
     </main>

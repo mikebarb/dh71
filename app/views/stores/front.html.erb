@@ -1,38 +1,41 @@
 <!-- The data controller - filter -->
 <div data-controller="filter">
-  <div id="front" class="bg-zinc-100 mb-32 flex flex-col flex-shrink flex-nowrap h-fit">
+  <div id="front" class="bg-slate-100 mb-2 flex flex-col flex-shrink flex-nowrap h-fit">
     
     <!--
-    <div id="outer_container" class="bg-zinc-100 mb-32 flex flex-col flex-shrink flex-nowrap overflow-y-scroll h-fit">
+    <div id="outer_container" class="bg-slate-100 mb-32 flex flex-col flex-shrink flex-nowrap overflow-y-scroll h-fit">
     <div id="first_container" class="w-full ">
     <section id="filter_section" class="bg-indigo-900 flex" data-filter-target="filterSection" >
     -->
-    <!-- <div id="outer_container" class="bg-zinc-100 mb-32 flex flex-col flex-shrink flex-nowrap h-fit"> -->
+    <!-- <div id="outer_container" class="bg-slate-100 mb-32 flex flex-col flex-shrink flex-nowrap h-fit"> -->
       <div id="top_container" class="sticky top-0 w-full flex flex-col">
-        <p class="bg-orange-500"><%= notice %></p>
+        <p class="bg-secondary"><%= notice %></p>
         <!-- The header for the store front page, include the navigation buttons to the brewster page -->
         <!-- <section id="page_header" class="max-sm:hidden relative bg-white w-full flex flex-nowrap"> -->
-          <section id="page_header" class="relative bg-indigo-900 w-full flex flex-nowrap">
-          <div class="m-4 text-white text-lg font-extrabold  text-center flex place-content-stretch">GCC Drink Ordering App</div>
-          <nav class="bg-white">
-            <ul class="absolute right-0 flex place-content-center">
-              <li class="max-sm:hidden p-2 m-2 bg-blue-300 hover:border-2 rounded-full border-blue-800"><%= link_to "Brewster", stores_brewster_path %></li>
+        <section id="page_header" class="relative flex felx-row justify-between bg-primary w-full">
+          <!-- <div class="flex place-content-center">
+            <img class="p2 m-5 h-16" src="/images/gcc_logo.png">
+          </div> --> 
+          <div class="m-4 text-white text-xl font-new font-extrabold text-center flex place-content-center"><%= link_to "GCC App - Order Drinks", "front" %></div>
+          <nav class="bg-secondary">
+            <ul class="flex flex-row">
+              <li class="max-sm:hidden m-4 text-white font-secondary hover:underline"><%= link_to "Brewster", stores_brewster_path %></li>
+              <li class="max-sm:hidden m-4 text-white font-secondary hover:underline"><%= link_to "Ready", stores_ready_path %></li>
             </ul>
           </nav>
         </section>
         <!-- section filterSection - this displays the filter functionally +
              displays the addPerson button when appropiate.
              Note: addPerson is a separate template, as it get dynamically updated from server. -->
-        <section id="filter_section" class="bg-indigo-100 flex" data-filter-target="filterSection" >
-          <div class="text-orange-600 self-center flex-col">
-            <p class="text-black">Select your name below:</p>
+        <section id="filter_section" class="bg-slate-100 flex p-4" data-filter-target="filterSection" >
+          <div class="text-secondary self-center flex-col">
             <div class="flex flex-row">
-              <span class="h-8 fas fa-search fa-lg p-3 text-center text-indigo-900 self-center border-indigo-950 border-s-2 border-y-2"></span>
-              <input id="filterText" data-filter-target="filterText" class="h-8 w-5/6 bg-white text-base text-black border-indigo-900 border-2" data-action="keyup->filter#changeFilterText" type="text" placeholder="Search name" autocomplete="off">
+              <span class="h-10 fas fa-search fa-lg py-4 px-3 bg-white text-center align-middle text-primary self-center border-primary border-s-2 border-y-2"></span>
+              <input id="filterText" data-filter-target="filterText" class="focus:border-secondary h-10 w-5/6 bg-white text-base text-black border-primary border-2" data-action="keyup->filter#changeFilterText" type="text" placeholder="Search name" autocomplete="off">
             </div>  
-            <span>New here? </span>
-            <span data-action="click->filter#showAddPerson" data-filter-target="addPersonPanelButton" class="underline font-bold">Click Here</span>
-            <span> to add yourself.</span>
+            <span class="font-secondary text-secondary">New to GCC? Add your name </span>
+            <span data-action="click->filter#showAddPerson" data-filter-target="addPersonPanelButton" class="underline font-bold">here.</span>
+            <p class="text-primary text-3xl pt-2 font-bold">Select your name below:</p>
           </div>
         </section>
         <!-- Section addPerson - this includes the form that enables a person to be added -->
@@ -41,7 +44,7 @@
         </section>
       
         <!-- Section requestSection - this is the section that has the form for ordering a drink -->
-        <section id="request_section" class="hidden self-center bg-indigo-900 w-full" data-filter-target="requestSection">
+        <section id="request_section" class="hidden self-center bg-primary w-full border-t-4 p-2 px-4" data-filter-target="requestSection">
           <%= render "frontrequestdrink" %>
         </section>
       </div>
@@ -62,22 +65,26 @@
 
         <!-- <div id="third_container" class="w-full"> -->
           <!-- Section buttonSection - the display of all the buttons to allow you to select your drink -->
-          <section id="buttons_section"  class="hidden bg-zinc-100 mb-2 flex-grow flex flex-col flex-nowrap" data-filter-target="buttonSection">    
-            <h2 data-filter-target="selectDrinksTitle" class="mb-2 font-serif text-2xl font-bold">Select Your Drink</h2>
+          <section id="buttons_section"  class="hidden bg-slate-100 m-2 flex-grow flex flex-col flex-nowrap" data-filter-target="buttonSection">    
+            <h2 data-filter-target="selectDrinksTitle" class="text-black text-3xl">Select Your Drink</h2>
             <div id="drinkarea" data-filter-target="drinkArea" class="flex flex-row" >
-              <div id="grpDrinks" class="flex flex-col w-5/12 mx-4 mt-4" >
+              <div id="grpDrinks" class="flex flex-col w-6/12 mx-2 mt-2" >
         <% 
                   @buttons.each do |b|
                       if b.group == "Drink" then
                           enablearray ="b" + b.enable.split(/ /).join(", b")
                           #byebug
-        %>                 <button data-filter-target="button" data-category="<%= b.group %>" data-action="click->filter#selectDrinkButton" class="xm-8 py-2 px-8 mt-1 border border-width-1 border-orange-600 bg-white sm:hover:bg-yellow-700 text-orange-600 font-bold py-2 px-4 rounded rounded-md" data-enable="<%= enablearray %>"><%= b.name %></button>
+        %>                 <button data-filter-target="button" data-category="<%= b.group %>" data-action="click->filter#selectDrinkButton" class="xm-8 py-2 px-8 mb-1 border border-width-1 border-secondary bg-white text-primary font-bold rounded rounded-md hover:bg-primary hover:text-white hover:border-primary" data-enable="<%= enablearray %>"><%= b.name %></button>
         <%             end
                   end
         %><!--
-              --><button id="other" data-filter-target="button" data-category="Drink" data-action="click->filter#selectDrinkButton" class="xm-8 py-2 px-8 mt-1 border border-width-1 border-orange-600 bg-white sm:hover:bg-yellow-700 text-orange-600 font-bold py-2 px-4 rounded rounded-md" data-enable="otherInput">Other</button>
-              </div><!--
-          --><div id="grpoptionsgroups" class="flex flex-col w-5/12 mx-4 mt-4">
+              --><button id="other" data-filter-target="button" data-category="Drink" data-action="click->filter#selectDrinkButton" class="xm-8 py-2 px-8 mb-1 border border-width-1 border-secondary bg-white text-primary font-bold rounded rounded-md hover:bg-primary hover:text-white hover:border-primary" data-enable="otherInput">Other</button>
+              </div><!--secondary
+         --><div id="grpoptionsgroups" class="flex flex-col w-6/12 mx-2 mt-2">
+              <div id="grpoptions" class="hidden flex flex-col pb-4">
+                <!-- <h2>Other</h2> -->
+                <input id="otherInput" data-filter-target="button" data-category="Other" data-action="keyup->filter#addTextOther" class="hidden bg-slate-500" type="text" placeholder="Describe drink" title="Drink Description">
+              </div>  
         <% 
                   currentGroup = ""
                   @buttons.each do |b|
@@ -90,12 +97,12 @@
                               end
                               currentGroup = b.group
         %><!--
-                            --><div id="grpoptions" class="hidden flex flex-col">
+                            --><div id="grpoptions" class="hidden flex flex-col pb-4">
                                   <h2><%= b.group %></h2>
         <%
                           end
         %>
-                                  <button id="<%= "b" + b.id.to_s %>" data-filter-target="button" data-category="<%= b.group %>" data-action="click->filter#selectOptionButton" class="xm-8 py-2 px-8 mt-1 border border-width-1 border-orange-600 bg-white sm:hover:bg-yellow-700 text-orange-600 font-bold py-2 px-4 rounded rounded-md"><%= b.name %></button>
+                                  <button id="<%= "b" + b.id.to_s %>" data-filter-target="button" data-category="<%= b.group %>" data-action="click->filter#selectOptionButton" class="xm-8 py-2 px-8 mt-1 border border-width-1 border-secondary bg-white text-primary font-bold rounded rounded-md hover:bg-primary hover:text-white hover:border-primary"><%= b.name %></button>
         <%
                       end
         %>
@@ -113,10 +120,7 @@
                   </div> -->
               </div>
             </div>
-            <div id="grpoptions" class="hidden flex flex-col">
-              <!-- <h2>Other</h2> -->
-              <input id="otherInput" data-filter-target="button" data-category="Other" data-action="keyup->filter#addTextOther" class="hidden bg-slate-500" type="text" placeholder="Describe drink" title="Drink Description">
-            </div>   
+             
           </section>   <!-- end of buttons_section -->
         <!-- </div>    end of third container -->
       </div>

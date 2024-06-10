@@ -71,7 +71,7 @@ export default class extends Controller {
     // put in the background image
     var theBody = document.getElementsByTagName("body")[0];
     console.log("theBody: ", theBody);
-    theBody.classList.remove("bg-zinc-100");
+    theBody.classList.remove("bg-slate-100");
     var theURL = 'ready_background_autumn.jpg';
     theBody.classList.add("bg-[url(ready_background_autumn.jpg)]")
     //theBody.classList.add("bg-[url(#theURL)]")

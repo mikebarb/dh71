@@ -19,6 +19,9 @@ class StoresController < ApplicationController
   # POST /people or /people.json
   def addperson
     logger.debug params.inspect
+    if params[:commit] != 'Add Name'
+      return
+    end
     @addperson = Person.new
     # @addperson = Person.new(addperson_params)
     @addperson.name = params["name"]
@@ -53,7 +56,7 @@ class StoresController < ApplicationController
     if params[:id] == ''
       return
     end
-    if params[:commit] == "Submit Order"
+    if params[:commit] == "Submit"
       @person = Person.includes(:last_order).find(params[:id])
       thisPersonTarget = "turbo_front_person_" + params[:id]
       if(!@person.last_order.nil?)
@@ -69,7 +72,7 @@ class StoresController < ApplicationController
         if @thisOrder.save
           thisOrderTarget = "turbo_request_order_" + @thisOrder.id.to_s
           format.html {
-            flash.now.notice = "Order placed."
+            flash.now.notice = "Your order has been placed."
             render :orderdrink 
             @thisOrder.broadcast_append_later_to 'orders', partial: 'stores/order'
             # now get the person with the just updated last order
@@ -97,7 +100,7 @@ class StoresController < ApplicationController
   respond_to do |format|
         if @thisOrder.save
           format.html {
-            flash.now.notice = "Order cancelled."
+            flash.now.notice = "Previous Order cancelled"
             render :orderdrink 
             @thisOrder.broadcast_replace_later_to 'orders', partial: 'stores/order', target: thisOrderTarget
             # now get the person with the just updated last order

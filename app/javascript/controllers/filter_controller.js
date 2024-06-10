@@ -11,8 +11,8 @@ export default class extends Controller {
     console.log("filter_controller connected", this.element);
     this.person_bg = 'bg-white';
     this.person_bg_selected = 'bg-zinc-200';
-    this.button_selected   = ["text-white", "bg-orange-600", "selected"];
-    this.button_deselected = ["text-orange-600", "bg-white"];
+    this.button_selected   = ["text-white", "bg-primary", "border-primary", "selected"];
+    this.button_deselected = ["text-primary", "bg-white", "border-secondary"];
 
     addEventListener("turbo:before-stream-render",
                      (event) => {this.beforeStreamRender(event) })
@@ -343,26 +343,30 @@ export default class extends Controller {
       //peopleSection.classList.add("max-h-40");
       peopleSection.classList.add("overflow-y-auto");
       if(personParentNode.getAttribute("data_order_status") == "new"){
-        buttonSubmitOrder.classList.add("invisible");
-        buttonSubmitCancel.classList.remove("invisible");
+        buttonSubmitOrder.classList.add("hidden");
+        buttonSubmitOrder.disabled = true;
+        buttonSubmitCancel.classList.remove("hidden");
         // hide the drink buttons so that they cannot change a drink
         // and then accidently think they can delete it.
         buttonSection.classList.add("hidden");
       }else{             //this drink has status other than new
-        buttonSubmitOrder.classList.remove("invisible");
-        buttonSubmitCancel.classList.add("invisible");
+        // buttonSubmitOrder.classList.remove("hidden");
+        buttonSubmitOrder.disabled = false;
+
+        buttonSubmitCancel.classList.add("hidden");
         buttonSection.classList.remove("hidden");
       }
-      // if description is empty, then hide the "submit order" button.
+      // if description is empty, then hide the "submit" button.
       if(this.requestDrinkTarget.value == ""){
-        buttonSubmitOrder.classList.add("invisible");
+        // buttonSubmitOrder.classList.add("hidden");
+        buttonSubmitOrder.disabled = true;
       }
       //personNode.scrollIntoView();
       // Need to  hide the newPerson button when a person is selected.
       newPersonButton.classList.add("hidden");
 
     }else{    // noone is selected
-      requestSection.classList.add("hidden");      // hide the request form
+      requestSection.classList.add("hidden");      // hide the request form  
       buttonSection.classList.add("hidden");       // hide the drink selection buttons
       //filterSection.classList.remove("hidden");    // show the filter selection or add name section
       //peopleSection.classList.remove("max-h-40");
@@ -419,23 +423,27 @@ export default class extends Controller {
       });
       if(canAddName){
         //this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
-        addPersonButton.classList.remove("hidden");
+        // addPersonButton.classList.remove("hidden");
         personExistsMessage.classList.add("hidden");
+        addPersonButton.disabled = false;
       }else{
         //this.addPersonNameTarget.value = "";
-        addPersonButton.classList.add("hidden");
+        // addPersonButton.classList.add("hidden");
         personExistsMessage.classList.remove("hidden");
+        addPersonButton.disabled = true;
       }
       if(nameText.trim().length == 0){
-        addPersonButton.classList.add("hidden");
+        // addPersonButton.classList.add("hidden");
         personExistsMessage.classList.add("hidden");
+        addPersonButton.disabled = true;
       }
     
     }else{     // no names on the page - only happens on app/db initialisation
       // As there are no people, can always add the name.
       //this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
       if(nameText.trim().length != 0){
-        addPersonButton.classList.remove("hidden");
+        // addPersonButton.classList.remove("hidden");
+        addPersonButton.disabled = false;
       }
     }
     console.log("addPersonButton", addPersonButton);
@@ -720,9 +728,11 @@ export default class extends Controller {
   setRequestDrink(desc){
     this.requestDrinkTarget.value = desc;
     if(desc.length == 0){
-      this.submitOrderTarget.classList.add("invisible");
+      // this.submitOrderTarget.classList.add("hidden");
+      this.submitOrderTarget.disabled = true;
     }else{
-      this.submitOrderTarget.classList.remove("invisible");
+      // this.submitOrderTarget.classList.remove("hidden");
+      this.submitOrderTarget.disabled = false;
     } 
   }  
 

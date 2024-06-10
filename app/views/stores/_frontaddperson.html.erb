@@ -5,16 +5,27 @@
     <% else %>
         <div id="flashNoticePerson" data-filter-target='requestNoticePerson' style="color: red"><%= flash.alert %></div>
     <% end %>
-    <div>
-      Please key in your full name.
-    </div>
-    <%= form_with url: stores_addperson_path, method: :post do |form| %>
+      <div class="py-2 px-4 text-3xl">
+        Please enter your full name.
+      </div>
+
+    <%= form_with url: stores_addperson_path, class:"px-4 flex flex-col", method: :post do |form| %>
       <%= form.hidden_field :id, value:"", :data => { :filter_target => 'requestPersonId1' } %>
       <% # form.text_area :name, size: "40x1", class:"hidden", :data => { :filter_target => 'addPersonName' }, autocomplete:"off" %>
-      <%= form.text_area :name, size: "40x1", :data => { :filter_target => 'addPersonName', :action => "keyup->filter#checkExistingNames" }, autocomplete:"off" %>
-      <p data-filter-target="personExistsMessage" class="hidden">This person is already present</p>
-      <% # form.submit "New Person", hidden: :true, class:"m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
-      <%= form.submit "Add this Name", class:"hidden m-2 bg-orange-600  rounded-full hover:bg-orange-400 text-white py-2 px-4", :data => { :filter_target => 'addPersonButton'} %>
+      <%= form.text_area :name, size: "40x1", class:"focus:border-secondary", :data => { :filter_target => 'addPersonName', :action => "keyup->filter#checkExistingNames" }, autocomplete:"off" %>
+      <p data-filter-target="personExistsMessage" class="hidden text-lg text-red-600 font-secondary">That person already exsists.</p>
+      <div class="flex justify-center">
+        <button data-action="click->filter#backToPeople" class=" m-2 bg-primary text-white border border-white font-bold py-2 px-4 rounded-full hover:bg-white hover:border-primary hover:text-primary">Back</button>
+        <% # form.submit "New Person", disabled: :true, class:"", :data => { :filter_target => 'addPersonButton'} %>
+        <%= form.submit "Add Name", disabled: :true, class:"
+          m-2 rounded-full py-2 px-4
+          bg-secondary text-white 
+          hover:bg-white hover:text-secondary border hover:border-secondary
+          disabled:bg-slate-200 disabled:text-slate-400 disabled:border-slate-400
+          ", :data => { :filter_target => 'addPersonButton'} %>
+      </div>
     <% end %>
-    <button data-action="click->filter#backToPeople" class="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back to People Selection</button>
+        <!-- <button data-action="click->filter#backToPeople" class=" m-2 bg-brown-600 text-white border border-white font-bold py-2 px-4 rounded-full hover:bg-white hover:border-brown-600 hover:text-brown-600">Back</button> -->
+
+
   </turbo-frame>
