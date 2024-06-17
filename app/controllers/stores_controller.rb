@@ -23,20 +23,15 @@ class StoresController < ApplicationController
       return
     end
     @addperson = Person.new
-    # @addperson = Person.new(addperson_params)
     @addperson.name = params["name"]
     respond_to do |format|
       if @addperson.save
         format.html {
-          logger.debug "before rendering addperson."
           flash.now.alert = "Person added (" + @addperson.id.to_s + ")."
           render :addperson
-          logger.debug "after rendering addperson."
           @person = Person.includes(:last_order).find(@addperson.id)
           thisPersonTarget = "turbo_front_person_" + @person.id.to_s
-          logger.debug "before broadcast addperson."
           @person.broadcast_append_later_to 'people', partial: 'stores/frontperson'
-          logger.debug "after broadcast addperson."
         }
       else
         format.html {
@@ -52,7 +47,7 @@ class StoresController < ApplicationController
   # - person entry already exists
   def orderdrink
     #byebug
-    logger.debug params.inspect
+    #logger.debug params.inspect
     if params[:id] == ''
       return
     end
@@ -121,7 +116,6 @@ class StoresController < ApplicationController
   def back
      @orders = Order
                .all
-#               .include ("person")
   end
 
   # GET /stores/brewster
@@ -131,18 +125,13 @@ class StoresController < ApplicationController
               .order(:id)
               .where('updated_at > ?', 24.hours.ago)
 
-    #@orderscount = Order.group(:drink).count
-              #.where("status == ?", "new")
-              #.includes(:drink)
-
     @statusList = ["new", "ready", "done"]
-
 
   end
   
   # POST /stores/updateStatus
   def updatestatus
-    logger.debug("updatestatus called.")
+    #logger.debug("updatestatus called.")
     @thisOrder = Order.includes(:person).find(params[:id])
     thisOrderTarget = "turbo_request_order_" + @thisOrder.id.to_s
     thisPersonTarget = "turbo_front_person_" + @thisOrder.person.id.to_s
@@ -185,8 +174,6 @@ class StoresController < ApplicationController
         if @thisOrder.save
           format.html {
             flash.now.notice = "Order status updated." 
-            #render :partial => 'stores/order', :object => @thisOrder
-            #@thisOrder.broadcast_replace_later_to 'orders', partial: 'stores/order'
           }
           format.turbo_stream{
             @thisOrder.broadcast_replace_later_to 'orders', partial: 'stores/order', target: thisOrderTarget
@@ -219,12 +206,10 @@ class StoresController < ApplicationController
               .includes(:person)
               .order(:id)
 
-              #.where("updated_at > ? AND status = ?", 24.hours.ago, "ready")
-
-    logger.debug "@readyorders: " + @readyorders.inspect
+    #logger.debug "@readyorders: " + @readyorders.inspect
     
     @statusList = ["ready"]
-    logger.debug "@statusList: " + @statusList.inspect
+    #logger.debug "@statusList: " + @statusList.inspect
     @readydisplay = true
   end
 

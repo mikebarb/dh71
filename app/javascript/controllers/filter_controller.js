@@ -8,7 +8,7 @@ export default class extends Controller {
                     "personExistsMessage", "selectDrinksTitle"];
   
   connect() {
-    console.log("filter_controller connected", this.element);
+    //console.log("filter_controller connected", this.element);
     this.person_bg = 'bg-white';
     this.person_bg_selected = 'bg-zinc-200';
     this.button_selected   = ["text-white", "bg-primary", "border-primary", "selected"];
@@ -19,16 +19,16 @@ export default class extends Controller {
   }
 
   beforeStreamRender(event){
-    console.log("beforeStreamRender");
-    console.log(event);
+    //console.log("beforeStreamRender");
+    //console.log(event);
     // only execute if we are on the "stores/front" page 
     if(!document.getElementById("front")){
-      console.log("not front page - exiting beforeStreamRender()");
+      //console.log("not front page - exiting beforeStreamRender()");
       return;
     }
     const fallbackToDefaultActions = event.detail.render
     event.detail.render = (streamElement) => {
-      console.log("streamElement", streamElement);
+      //console.log("streamElement", streamElement);
       //console.log(streamElement.target);
       fallbackToDefaultActions(streamElement)
       if (streamElement.action == "append") {
@@ -43,12 +43,6 @@ export default class extends Controller {
       }
     }
   }
-
-  //personTargetConnected(element) {
-  //  console.log("personTargetConnected invoked.");
-  //  console.log(element);
-  //  this.onUpdate(element);
-  //}
 
   //--------------------------------------------------------------
   // invoked when the content of the filter Text field changes.
@@ -90,8 +84,7 @@ export default class extends Controller {
   //        Note: this is the parent element of the one clicked on.
   //              also is not the turbo-frame element.
   onUpdate(element){
-    console.log("onUpdate called");
-    //console.log("element: ", element);
+    //console.log("onUpdate called");
     // key decision making info about this element
     const elementPersonId    = element.getAttribute("data_person_id");                 // record id of person
     const elementStatus      = element.getAttribute("data_order_status");              // status of last order
@@ -100,17 +93,8 @@ export default class extends Controller {
     //const lastListedPerson   = this.peopleTarget.lastElementChild.lastElementChild;    
     var   noticePerson       = this.requestNoticePersonTarget.textContent;      // response to add person form submit
     var   noticeOrder        = this.requestNoticeTarget.textContent;            // response to submit/cancel order form submit
-    //console.log("noticePerson: ", noticePerson);         
-    //console.log("noticeOrder: ", noticeOrder);
-    
-    //console.log("lastListedPerson: ", lastListedPerson);
-    //console.log("elementPersonId: ", elementPersonId);
-    //console.log("personSelected : ", personSelected);
-    //console.log("elementStatus : ", elementStatus);
     if(noticePerson != ""){
-      //console.log("noticeText has something ", noticePerson);
       var localAddedPersonId = noticePerson.match(/(\d+)/)[1]; 
-      //console.log("localAddedPersonId: ", localAddedPersonId);
       // see if this screen added this person
       if(elementPersonId == localAddedPersonId){
         // then select this person as if someone click to select person
@@ -148,7 +132,7 @@ export default class extends Controller {
   }
 
   showAddPerson(){
-    console.log("showAddPerson called.")
+    //console.log("showAddPerson called.")
     const eleAddPerson = this.addPersonTarget;
     const eleFilterSection = this.filterSectionTarget;
     const elePeople = this.peopleTarget;
@@ -161,40 +145,32 @@ export default class extends Controller {
   }
 
   selectPerson(){
-    console.log("selectPerson called");
+    //console.log("selectPerson called");
     // make sure there are people to process
     // get the element that made this call
     const personNode = event.currentTarget;
-    //console.log("personNode: ", personNode);
     this.selectPersonWithNode(personNode);
   }
   //--------------------------------------------------------------
   // select person and put details in ordering section
   // or deSelect the person if already selected.
   selectPersonWithNode(personNode){
-    console.log("selectPersonWithNode called");
+    //console.log("selectPersonWithNode called");
     //clear the flash notice html div field
     this.clearFlash();
-    //console.log("personNode: ", personNode);
-    //const thisPersonId = personNode.parentNode.getAttribute("data-person-selected");
     const thisPersonId = personNode.parentNode.getAttribute("data_person_id");
-    //console.log("thisPersonId: ", thisPersonId);
     //check if this person is already selected.
     //<div id="people" data-filter-target="people" data-person-selected="">
     const peopleInfo = this.peopleTarget;
-    //console.log("peopleInfo: ", peopleInfo);
     const thisSelectedPersonId = peopleInfo.getAttribute("data_person_selected");
-    //console.log("thisSelectedPersonId: ", thisSelectedPersonId);
     // get an array of all the nodes containing each person
     const allPeople  =  this.personTargets;
     if(thisSelectedPersonId){             // something selected
-      if(thisSelectedPersonId == thisPersonId){      // deselection an already selected person
-        //console.log("this person already selected", thisSelectedPersonId);
+      if(thisSelectedPersonId == thisPersonId){      // deselect an already selected person
         // simply deselect this person.
         this.deSelectOnePerson(personNode, peopleInfo);
         this.dePopulateRequestForm(personNode);
       }else{                                         // selecting a different person
-        //console.log("selected", thisSelectedPersonId);
         //need to deselect everything!!!
         // and select this person
         this.deselectAllPeople();
@@ -202,7 +178,6 @@ export default class extends Controller {
         this.populateRequestForm(personNode);
       }   
     }else{                                 // no current person selected
-      //console.log("nothing selected");
       // use all the existing processing.
       this.deselectAllPeople();
       // show what is selected by changing text colour
@@ -241,7 +216,7 @@ export default class extends Controller {
   }
 
   hidePeopleButSelected(){
-    console.log("hidePeopleButSelected called");
+    //console.log("hidePeopleButSelected called");
     //<div id="people" data-filter-target="people" data-person-selected="">
     const peopleInfo = this.peopleTarget;
     const thisSelectedPersonId = peopleInfo.getAttribute("data_person_selected");
@@ -326,20 +301,18 @@ export default class extends Controller {
 
  
   showHideStuff(personNode){
-    console.log("showHideStuff called");
+    //console.log("showHideStuff called");
     const personParentNode   = personNode.parentNode
     const personSelected     = this.peopleTarget.getAttribute("data_person_selected");
     const peopleSection      = this.peopleTarget.parentNode;
     const requestSection     = this.requestSectionTarget;
     const buttonSection      = this.buttonSectionTarget;
-    const filterSection      = this.filterSectionTarget;
     const newPersonButton    = this.addPersonButtonTarget;
     const buttonSubmitOrder  = this.submitOrderTarget;
     const buttonSubmitCancel = this.submitCancelTarget; 
     if(personSelected){
       requestSection.classList.remove("hidden");
       buttonSection.classList.remove("hidden");
-      //filterSection.classList.add("hidden");
       //peopleSection.classList.add("max-h-40");
       peopleSection.classList.add("overflow-y-auto");
       if(personParentNode.getAttribute("data_order_status") == "new"){
@@ -368,7 +341,6 @@ export default class extends Controller {
     }else{    // noone is selected
       requestSection.classList.add("hidden");      // hide the request form  
       buttonSection.classList.add("hidden");       // hide the drink selection buttons
-      //filterSection.classList.remove("hidden");    // show the filter selection or add name section
       //peopleSection.classList.remove("max-h-40");
       peopleSection.classList.remove("overflow-y-auto");
       // Need to  show the newPerson button when noone is selected.
@@ -393,7 +365,7 @@ export default class extends Controller {
   //               Otherwise, set to TRUE.
   //                 
   checkExistingNames(){
-    console.log("checkExistingNames function requested");
+    //console.log("checkExistingNames function requested");
     
     // initialise canAddName - default to prevent adding a person
     let canAddName = true;
@@ -446,7 +418,6 @@ export default class extends Controller {
         addPersonButton.disabled = false;
       }
     }
-    console.log("addPersonButton", addPersonButton);
   };
 
   //---------------------------------------------------------------
@@ -462,7 +433,7 @@ export default class extends Controller {
   //               Otherwise, set to TRUE.
   //                 
   doFilter(){
-    console.log("filter function requested", this.element)
+    //console.log("filter function requested", this.element)
     
     // who is the current selected person (id)
     var selectedPersonId = this.peopleTarget.getAttribute("data_person_selected");
@@ -504,12 +475,10 @@ export default class extends Controller {
       canAddName = true;
       if(canAddName){
         this.addPersonNameTarget.value = this.filterTextTarget.value.trim();
-        //addPersonButton.hidden = false;
         addPersonButton.classList.remove("hidden");
 
       }else{
         this.addPersonNameTarget.value = "";
-        //addPersonButton.hidden = true;
         addPersonButton.classList.add("hidden");
       }
       if(selectedPersonId != 0){
@@ -524,7 +493,6 @@ export default class extends Controller {
         addPersonButton.classList.remove("hidden");
       }
     }
-    console.log("addPersonButton", addPersonButton);
   };
 
   //-------------------------------------------------------------------------------------------------------------------------------
@@ -533,7 +501,7 @@ export default class extends Controller {
   //-------------------------------------------------------------------------------------------------------------------------------
   // Sorts the people (table rows) by name order
   doSort(){
-    console.log("sort function called", this.element)
+    //console.log("sort function called", this.element)
     if(this.hasPersonTarget) {
       const allPeople  =  this.personTargets;
       const peopleContainer = this.peopleTarget;
@@ -566,7 +534,7 @@ export default class extends Controller {
   // For drink buttons, deselect all drink buttons.
   // and hide the options
   initialiseButtons(){
-    console.log("initialiseButtons called.");
+    //console.log("initialiseButtons called.");
     // build an array of all buttons
     const allButtons  =  this.buttonTargets;
     // initialise the display of the buttons.
@@ -600,7 +568,7 @@ export default class extends Controller {
 
   // Called when a "drink" button is selected.
   selectDrinkButton(){
-    console.log("selectDrinkButton called.");
+    //console.log("selectDrinkButton called.");
     //clear the flash notice html div field
     this.clearFlash();
     // Now determine what button was pressed.
@@ -661,7 +629,7 @@ export default class extends Controller {
 
   // Called when a "drink option" button is selected.
   selectOptionButton(){
-    console.log("selectOptionButton called.");
+    //console.log("selectOptionButton called.");
     // Now determine what button was pressed.
     const buttonNode = event.currentTarget;
     // check if this button is already selected?
@@ -704,7 +672,7 @@ export default class extends Controller {
   // make the full drink description to be placed
   // in the drink ordering field.
   makeDrinkDescription(){
-    console.log("makeDrinkDescription called");
+    //console.log("makeDrinkDescription called");
     var description = "";
     // build an array of all buttons
     const allButtons  =  this.buttonTargets;
@@ -737,7 +705,7 @@ export default class extends Controller {
   }  
 
   addTextOther(){
-    console.log("actionInput called");
+    //console.log("actionInput called");
     this.makeDrinkDescription();
   }
 }

@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["order", "orderId", "statusSection", "orderDrink", "setNew", "setReady", "setDone", "doDelete" ]
   
   connect() {
-    console.log("ready_controller connected", this.element);
+    //console.log("ready_controller connected", this.element);
     addEventListener("turbo:before-stream-render",
                      (event) => {this.beforeStreamRender(event) });
     this.onPageLoad();
@@ -12,28 +12,28 @@ export default class extends Controller {
 
 
   beforeStreamRender(event){
-    console.log("beforeStreamTender");
-    console.log(event);
+    //console.log("beforeStreamTender");
+    //console.log(event);
     // only execute if we are on the "stores/ready" page 
     if(!document.getElementById("ready")){
-      console.log("not ready page - exiting beforeStreamRender()");
+      //console.log("not ready page - exiting beforeStreamRender()");
       return;
     }
     const fallbackToDefaultActions = event.detail.render
     event.detail.render = (streamElement) => {
-      console.log("streamElement", streamElement);
+      //console.log("streamElement", streamElement);
       var turboElement = streamElement.templateContent.firstElementChild; 
-      console.log("turboElement:", turboElement);
+      //console.log("turboElement:", turboElement);
       var formElement = turboElement.firstElementChild.firstElementChild; 
-      console.log("formElement: ", formElement);
+      //console.log("formElement: ", formElement);
       var formChildren = formElement.children;
-      console.log("formChildren: ", formChildren);
+      //console.log("formChildren: ", formChildren);
       var personElement = formChildren[1];
-      console.log("personElement: ", personElement);
+      //console.log("personElement: ", personElement);
       var personElementId = personElement.id;
-      console.log("personElementId: ", personElementId);
+      //console.log("personElementId: ", personElementId);
       var personChildren = formChildren[1].children;
-      console.log("personChildren: ", personChildren);
+      //console.log("personChildren: ", personChildren);
       //console.log(streamElement.target);
       //console.log("personChildren: ", personChildren);
       fallbackToDefaultActions(streamElement)
@@ -42,7 +42,7 @@ export default class extends Controller {
   }
 
   displaySingle(personElementId){
-    console.log("displaySingle Called - personElementId: ", personElementId);
+    //console.log("displaySingle Called - personElementId: ", personElementId);
     var personElement = document.getElementById(personElementId);
     var personStatus = personElement.getAttribute("data-status");
     var personId = personElementId.match(/(\d+$)/)[1];
@@ -61,16 +61,16 @@ export default class extends Controller {
   }  
 
   onPageLoad(){
-    console.log("onPageLoad called");
+    //console.log("onPageLoad called");
     // format each line of the orders - hide stuff not wanted.
     var allOrderElements = this.orderTargets;
-    console.log("allOrderElements: ", allOrderElements); 
+    //console.log("allOrderElements: ", allOrderElements); 
     [...allOrderElements].forEach(ele => {
       this.displaySingle(ele.id); 
     });
     // put in the background image
     var theBody = document.getElementsByTagName("body")[0];
-    console.log("theBody: ", theBody);
+    //console.log("theBody: ", theBody);
     theBody.classList.remove("bg-slate-100");
     var theURL = 'ready_background_autumn.jpg';
     theBody.classList.add("bg-[url(ready_background_autumn.jpg)]")
@@ -92,13 +92,13 @@ export default class extends Controller {
   // b) calls "hideSelectedDrink" to show and hide relevant orders.
 
   findSelectedDrink() {
-    console.log("=== findSelectedDrink called ===");     
+    //console.log("=== findSelectedDrink called ===");     
   }
 
   //--------------------------------------------------------------
   // Called to show and hide orders  
   hideSelectedDrink() {
-    console.log("hideSelectedDrink called.")
+    //console.log("hideSelectedDrink called.")
   }
 
   //--------------------------------------------------------------
@@ -106,7 +106,7 @@ export default class extends Controller {
   // - by pressing status button for that order
   // - this function needs to be called after the turboframe refresh
   getOrders() {
-    console.log("=== getOrders called ===")
+    //console.log("=== getOrders called ===")
   }
 
 }

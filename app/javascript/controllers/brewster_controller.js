@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["order", "drink", "drinkTemplate", "drinkSection", "showStatus", "statusSection"]
   
   connect() {
-    console.log("brewster_controller connected", this.element)
+    //console.log("brewster_controller connected", this.element)
   
     addEventListener("turbo:before-stream-render",
                      (event) => {this.beforeStreamRenderBrewster(event) })
@@ -15,16 +15,16 @@ export default class extends Controller {
   }
 
   beforeStreamRenderBrewster(event){
-    console.log("beforeStreamRenderBrewster - brewster");
-    console.log(event);
+    //console.log("beforeStreamRenderBrewster - brewster");
+    //console.log(event);
     // only execute if we are on the "stores/brewster" page 
     if(!document.getElementById("brewster")){
-      console.log("not brewster page - exiting beforeStreamRenderBrewster()");
+      //console.log("not brewster page - exiting beforeStreamRenderBrewster()");
       return;
     }
     const fallbackToDefaultActions = event.detail.render
     event.detail.render = (streamElement) => {
-      console.log("streamElement", streamElement);
+      //console.log("streamElement", streamElement);
       fallbackToDefaultActions(streamElement);
       this.getOrders();
     }
@@ -45,7 +45,7 @@ export default class extends Controller {
   // a) sets the status to be shown as data in the header div
   // b) turn the highlighting on or off for this button.
   showStatus(){
-    console.log("showStatus called");
+    //console.log("showStatus called");
     const statusColour = {"new":"blue", "ready":"green", "done":"slate"};
     const statusValues = ["new", "ready", "done"]; 
     const selectedStatusButton = event.currentTarget; 
@@ -84,7 +84,7 @@ export default class extends Controller {
   // b) calls "hideSelectedDrink" to show and hide relevant orders.
 
   findSelectedDrink() {
-    console.log("=== findSelectedDrink called ===");
+    //console.log("=== findSelectedDrink called ===");
     // Now determine what button was pressed.
     const selectedEle = event.currentTarget;
     var selectedDrink = selectedEle.getAttribute("data-drink");
@@ -125,7 +125,7 @@ export default class extends Controller {
   //--------------------------------------------------------------
   // Called to show and hide orders  
   hideSelectedDrink() {
-    console.log("hideSelectedDrink called.")
+    //console.log("hideSelectedDrink called.")
     const showStatus = this.statusSectionTarget.getAttribute("data-showStatus"); 
     const showDrink = this.drinkSectionTarget.getAttribute("data-show");
     const allOrders  =  this.orderTargets;
@@ -143,11 +143,11 @@ export default class extends Controller {
   }
 
   //--------------------------------------------------------------
-  // UPdate the status of an order 
+  // Update the status of an order 
   // - by pressing status button for that order
   // - this function needs to be called after the turboframe refresh
   getOrders() {
-    console.log("=== getOrders called ===")
+    //console.log("=== getOrders called ===")
 
     var countNew   = 0;
     var countReady = 0;
@@ -181,22 +181,6 @@ export default class extends Controller {
         }
       }
     });
-    // this section is console logging for troubleshooting.
-    // ** set to true to show in console, false otherwise **
-    if(false){
-      console.log("drinks done :", "\t", countDone);
-      console.log("drinks ready:", "\t", countReady);
-      console.log("drinks new  :", "\t", countNew);
-      console.log("Now list of new drinks by type.");
-
-      [...Object.keys(newDrinks).sort()].forEach(itemkey=>{
-        console.log(itemkey, "\t", newDrinks[itemkey]);
-      });
-      console.log("Now list of made drinks that are not in new drinks.");
-      [...Object.keys(madeDrinks).sort()].forEach(itemkey=>{
-        console.log(itemkey);
-      });
-    }
     // make the dom for drinks
     this.makeDrinkEnteries(newDrinks, madeDrinks);
     this.hideSelectedDrink();
@@ -208,26 +192,19 @@ export default class extends Controller {
   // 1. hideDrink   = the drink to be hidden, shows everything else
   // 2. flagAlready = this drink is currently set, simple need to reset!
   makeDrinkEnteries(newDrinks, readyDrinks) {
-    console.log("makeDrinkEnteries called");
-    //console.log("Now list of made drinks that are not in new drinks.");
-    //[...Object.keys(madeDrinks).sort()].forEach(itemkey=>{
-    //  console.log(itemkey);
-    //});
+    //console.log("makeDrinkEnteries called");
     // Need to check if the currently selected drink is still
     // present in the new and ready lists.
     // If NOT, then reset the selected drink.
     var flagDrinkSelectedPresent = false;
     const parentEle = this.drinkSectionTarget;
     const drinkDisplay = parentEle.getAttribute("data-show");
-    //console.log("drinkDisplay: ", drinkDisplay); 
     var headerEle = parentEle.children[0].cloneNode(true);
     const templateEle = this.drinkTemplateTarget;
     parentEle.replaceChildren();
     parentEle.appendChild(headerEle);    
-    //console.log("------------------------------");
 
     [...Object.keys(newDrinks).sort()].forEach(myDrink=>{
-      //console.log(myDrink, "\t", newDrinks[myDrink]);
       var drinkEle = templateEle.cloneNode(true); 
       drinkEle.classList.remove("hidden");
       drinkEle.setAttribute("data-brewster-target", "drink");  
@@ -235,24 +212,19 @@ export default class extends Controller {
       drinkEle.classList.add("border", "rounded-full", "border-white", "m-2");
       if(myDrink == drinkDisplay){
         flagDrinkSelectedPresent = true;
-        //drinkEle.classList.add("bg-blue-800");
         drinkEle.classList.remove("bg-white", "text-blue-800");
         drinkEle.classList.add("bg-blue-800", "text-white");
       }else{
         drinkEle.classList.remove("bg-blue-800", "text-white");
         drinkEle.classList.add("bg-white", "text-blue-800");
       }
-      //console.log(drinkEle);
       var drinkEleChildren = drinkEle.children;
-      //console.log(drinkEleChildren);
       drinkEleChildren[0].innerText = myDrink;
       drinkEleChildren[1].innerText = newDrinks[myDrink];
-      //console.log(drinkEle);
       parentEle.appendChild(drinkEle);
     });
     
     [...Object.keys(readyDrinks).sort()].forEach(myDrink=>{
-      //console.log(myDrink, "\t", readyDrinks[myDrink]);
       var drinkEle = templateEle.cloneNode(true); 
       drinkEle.classList.remove("hidden");
       drinkEle.setAttribute("data-brewster-target", "drink")  
@@ -260,19 +232,14 @@ export default class extends Controller {
       drinkEle.classList.add("border", "rounded-full", "border-white", "m-2");
       if(myDrink == drinkDisplay){
         flagDrinkSelectedPresent = true;
-        //drinkEle.classList.add("bg-blue-800");
         drinkEle.classList.remove("bg-white", "text-blue-800");
         drinkEle.classList.add("bg-blue-800", "text-white");
       }else{
         drinkEle.classList.add("bg-white", "text-blue-800");
         drinkEle.classList.remove("bg-blue-800", "text-white");
       }
-      //console.log(drinkEle);
       var drinkEleChildren = drinkEle.children;
-      //console.log(drinkEleChildren);
       drinkEleChildren[0].innerText = myDrink;
-      //drinkEleChildren[1].innerText = manyDrinks[myDrink];
-      //console.log(drinkEle);
       parentEle.appendChild(drinkEle);
     });
     if(flagDrinkSelectedPresent == false){   // selected drink no longer present

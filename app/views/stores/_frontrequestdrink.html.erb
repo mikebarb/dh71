@@ -1,6 +1,4 @@
 <turbo-frame id="turbo_request_order">
-    <% #byebug %>
-    
     <%= form_with url: stores_orderdrink_path, method: :post do |form| %>
     <div class="flex flex-col"> 
         <%= form.hidden_field :id, value:"", :data => { :filter_target => 'requestPersonId' } %>
@@ -15,7 +13,6 @@
             <%= form.text_area :drink, readonly: "true", size: "40x1", class: "bg-primary border-0 text-white w-full text-xl", :data => { :filter_target => 'requestDrink' } %>
         </div>
         <div class="flex flex-row w-full justify-center">
-            <!-- <button data-action="click->filter#backToPeople" class="m-2 py-2 px-4 bg-brown-600 text-white border border-white font-bold rounded-full hover:bg-white hover:border-brown-600 hover:text-brown-600">Back</button> -->
             <button data-action="click->filter#backToPeople" class="m-2 py-2 px-4 bg-slate-100 text-primary border border-primary font-bold rounded-full hover:bg-slate-400">Back</button>
             <%= form.submit value: "Submit", :data => { :filter_target => 'submitOrder'},  class: "
             m-2 rounded-full py-2 px-4 font-bold
