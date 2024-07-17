@@ -1,8 +1,9 @@
 <turbo-frame id="turbo_request_<%= dom_id order %>">
-  <%   colourNew       = "cyan-500"
-       colourReady     = "--secondary"
-       colourDone      = "secondary"
-       colourCancelled = "red-600"
+  <%   colourNew                   = "cyan-500"
+       colourReady                 = "secondary"
+       colourDone                  = "primary"
+       colourCancelled             = "red-600"
+       dummyValueForTailwindToFind = "border-red-600"
   %>
   <% if order.status == "new" %>
     <div class="bg-white my-2 p-2 border-l-4 border-solid border-<%= colourNew %>" >
