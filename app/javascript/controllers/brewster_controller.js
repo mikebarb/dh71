@@ -47,8 +47,10 @@ export default class extends Controller {
   showStatus(){
     //console.log("showStatus called");
     //const statusColour = {"new":"blue", "ready":"green", "done":"slate"};
-    const statusColour = {"new":"cyan-500", "ready":"secondary", "done":"primary"};
-    const statusColourDeselect = {"new":"slate-400", "ready":"slate-400", "done":"slate-400"};
+    const statusColour = {"new":"bg-cyan-500", "ready":"bg-secondary", "done":"bg-primary"};
+    const statusColourDeselect = {"new":"bg-slate-300", "ready":"bg-slate-300", "done":"bg-slate-300"};
+    const statusTextColour = {"new":"text-white", "ready":"text-white", "done":"text-white"};
+    const statusTextColourDeselect = {"new":"text-black", "ready":"text-black", "done":"text-black"};
     const statusValues = ["new", "ready", "done"]; 
     const selectedStatusButton = event.currentTarget; 
     var selectedStatus = selectedStatusButton.getAttribute("data-status");
@@ -59,16 +61,20 @@ export default class extends Controller {
       var currentShowStatus = currentShowStatus.replace(selectedStatus,'');    // update show string - remove this status
       [...statusValues].forEach(thisStatus=>{
         if(selectedStatus == thisStatus){
-          selectedStatusButton.classList.remove("bg-" + statusColour[thisStatus]);                    // then deselect - remove highlight
-          selectedStatusButton.classList.add("bg-" + statusColourDeselect[thisStatus]);
+          selectedStatusButton.classList.remove(statusColour[thisStatus]);                    // then deselect - remove highlight
+          selectedStatusButton.classList.add(statusColourDeselect[thisStatus]);
+          selectedStatusButton.classList.remove(statusTextColour[thisStatus]);                    // then deselect - remove highlight
+          selectedStatusButton.classList.add(statusTextColourDeselect[thisStatus]);
         }
       });
     }else{
       var currentShowStatus = currentShowStatus + " " + selectedStatus;        // update show string - add this status
       [...statusValues].forEach(thisStatus=>{
         if(selectedStatus == thisStatus){
-          selectedStatusButton.classList.remove("bg-" + statusColourDeselect[thisStatus]);   // then deselect - remove highlight
-          selectedStatusButton.classList.add("bg-" + statusColour[thisStatus]);
+          selectedStatusButton.classList.remove(statusColourDeselect[thisStatus]);   // then deselect - remove highlight
+          selectedStatusButton.classList.add(statusColour[thisStatus]);
+          selectedStatusButton.classList.remove(statusTextColourDeselect[thisStatus]);   // then deselect - remove highlight
+          selectedStatusButton.classList.add(statusTextColour[thisStatus]);
         }
       });
     }
