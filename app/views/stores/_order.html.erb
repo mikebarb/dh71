@@ -1,17 +1,17 @@
 <turbo-frame id="turbo_request_<%= dom_id order %>">
-  <%   colourNew       = "sky-500"
-       colourReady     = "green-500"
-       colourDone      = "slate-500"
-       colourCancelled = "red-500"
+  <%   colourNew       = "cyan-500"
+       colourReady     = "--secondary"
+       colourDone      = "secondary"
+       colourCancelled = "red-600"
   %>
   <% if order.status == "new" %>
-    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourNew %>" >
+    <div class="bg-white my-2 p-2 border-l-4 border-solid border-<%= colourNew %>" >
   <% elsif order.status == "ready" %>
-    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourReady %>" >
+    <div class="bg-white my-2 p-2 border-l-4 border-solid border-<%= colourReady %>" >
   <% elsif order.status == "done" %>
-    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourDone %>" >
+    <div class="bg-white my-2 p-2 border-l-4 border-solid border-<%= colourDone %>" >
   <% elsif order.status == "cancelled" %>
-    <div class="bg-white my-2 py-2 border-l-4 border-solid border-<%= colourCancelled %>" >
+    <div class="bg-white my-2 p-2 border-l-4 border-solid border-<%= colourCancelled %>" >
   <% end %>
         <%= form_with url: stores_updatestatus_path, method: :post do |form| %> 
             <% if flash.notice %>
@@ -24,7 +24,7 @@
                 data-ready-target="order" 
                 data-status="<%= order.status %>"
                 data-drink="<%= order.drink %>"
-                class="flex items-center">
+                class="flex items-center text-2xl w-full justify-between">
                 
                 <%= form.text_area :id, size: "10x1", class: "hidden", :data => { :filter_target => 'orderId' }, value: order.id %>
                 
@@ -32,8 +32,8 @@
                 <%= order.id %>
                 </div>
                 
-                <div class="flex items-center content-center w-3/12 break-normal block font-medium mb-1">
-                    <span class="fas fa-hiking my-2 mr-4"></span>
+                <div class="flex items-center content-center w-3/12 break-normal block font-medium pl-2">
+                    <span class="fas fa-user my-2 mx-4"></span>
                     <span><%= order.person.name %></span>
                 </div>
 
@@ -47,27 +47,27 @@
                     <%= order.status %>
                 </div>  
 
-                <div class="flex w-5/12 ">
+                <div class="flex w-5/12 h-12">
                     <% if order.status != "cancelled" %>
                         <% if order.status == "new" %>
-                            <%= form.submit "New",    disabled: true, value: "New", class:"w-2/6 mx-1 bg-sky-500 border-sky-500 border-2              text-white   font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>
+                            <%= form.submit "New",    disabled: true, value: "New", class:"w-2/6 bg-cyan-500 border-cyan-500 border-2 rounded-l-full text-white font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>
                         <% else %>
-                            <%= form.submit "New",                                  class:"w-2/6 mx-1 bg-white   border-sky-500 border-2 rounded-full text-sky-500 font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>  
+                            <%= form.submit "New",                                  class:"w-2/6 bg-white border-cyan-500 border-2 rounded-l-full text-cyan-500 font-bold py-1 px-4", :data => { :filter_target => 'setNew'} %>  
                         <% end %>
 
                         <% if order.status == "ready" %>
-                            <%= form.submit "Ready",    disabled: true, value: "Ready", class:"w-2/6 mx-1 bg-green-500 border-green-500 border-2              text-white     font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>
+                            <%= form.submit "Ready",    disabled: true, value: "Ready", class:"w-2/6 bg-secondary border-secondary border-2 rounded-none text-white font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>
                         <% else %>
-                            <%= form.submit "Ready",                                    class:"w-2/6 mx-1 bg-white     border-green-500 border-2 rounded-full text-green-500 font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>  
+                            <%= form.submit "Ready",                                    class:"w-2/6 bg-white border-secondary border-2 rounded-none text-secondary font-bold py-1 px-4", :data => { :filter_target => 'setReady'} %>  
                         <% end %>
 
                         <% if order.status == "done" %>
-                            <%= form.submit "Done",    disabled: true, value: "Done", class:"w-2/6 mx-1 bg-slate-500 border-slate-500 border-2              text-white     font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>
+                            <%= form.submit "Done",    disabled: true, value: "Done", class:"w-2/6 bg-primary border-primary border-2 rounded-r-full text-white font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>
                         <% else %>
-                            <%= form.submit "Done",                                   class:"w-2/6 mx-1 bg-white     border-slate-500 border-2 rounded-full text-slate-500 font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>  
+                            <%= form.submit "Done",                                   class:"w-2/6 bg-white border-primary border-2 rounded-r-full text-primary font-bold py-1 px-4", :data => { :filter_target => 'setDone'} %>  
                         <% end %>
                     <% else %>
-                        <%= form.submit "doDelete", value: "delete", class:"w-2/6 mx-1 bg-red-500 border-bg-red-500 border-2 rounded-full text-white font-bold py-1 px-4", :data => { :filter_target => 'doDelete'} %>
+                        <p class="leading-tight self-center">This drink has been cancelled. Remove from list?</p><%= form.submit "doDelete", value: "Remove", class:"w-2/6 mx-1 bg-red-600 border-bg-red-600 border-2 rounded-full text-white font-bold py-1 px-4", :data => { :filter_target => 'doDelete'} %>
                     <% end %>
                 </div>
             </div>

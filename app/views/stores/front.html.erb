@@ -63,12 +63,13 @@
                 end
       %><!--
             --><button id="other" data-filter-target="button" data-category="Drink" data-action="click->filter#selectDrinkButton" class="xm-8 py-2 px-8 mb-1 border border-width-1 border-secondary bg-white text-primary font-bold rounded rounded-md hover:bg-primary hover:text-white hover:border-primary" data-enable="otherInput">Other</button>
-            </div><!--secondary
-        --><div id="grpoptionsgroups" class="flex flex-col w-6/12 mx-2 mt-2">
             <div id="grpoptions" class="hidden flex flex-col pb-4">
               <!-- <h2>Other</h2> -->
               <input id="otherInput" data-filter-target="button" data-category="Other" data-action="keyup->filter#addTextOther" class="hidden bg-slate-500" type="text" placeholder="Describe drink" title="Drink Description">
             </div>  
+          </div><!--secondary
+        --><div id="grpoptionsgroups" class="flex flex-col w-6/12 mx-2 mt-2">
+            
       <% 
                 currentGroup = ""
                 @buttons.each do |b|

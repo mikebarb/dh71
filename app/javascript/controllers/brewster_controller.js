@@ -46,7 +46,9 @@ export default class extends Controller {
   // b) turn the highlighting on or off for this button.
   showStatus(){
     //console.log("showStatus called");
-    const statusColour = {"new":"blue", "ready":"green", "done":"slate"};
+    //const statusColour = {"new":"blue", "ready":"green", "done":"slate"};
+    const statusColour = {"new":"cyan-500", "ready":"secondary", "done":"primary"};
+    const statusColourDeselect = {"new":"slate-400", "ready":"slate-400", "done":"slate-400"};
     const statusValues = ["new", "ready", "done"]; 
     const selectedStatusButton = event.currentTarget; 
     var selectedStatus = selectedStatusButton.getAttribute("data-status");
@@ -57,16 +59,16 @@ export default class extends Controller {
       var currentShowStatus = currentShowStatus.replace(selectedStatus,'');    // update show string - remove this status
       [...statusValues].forEach(thisStatus=>{
         if(selectedStatus == thisStatus){
-          selectedStatusButton.classList.remove("bg-" + statusColour[thisStatus] +"-500");                    // then deselect - remove highlight
-          selectedStatusButton.classList.add("bg-" + statusColour[thisStatus] +"-200");
+          selectedStatusButton.classList.remove("bg-" + statusColour[thisStatus]);                    // then deselect - remove highlight
+          selectedStatusButton.classList.add("bg-" + statusColourDeselect[thisStatus]);
         }
       });
     }else{
       var currentShowStatus = currentShowStatus + " " + selectedStatus;        // update show string - add this status
       [...statusValues].forEach(thisStatus=>{
         if(selectedStatus == thisStatus){
-          selectedStatusButton.classList.remove("bg-" + statusColour[thisStatus] +"-200");   // then deselect - remove highlight
-          selectedStatusButton.classList.add("bg-" + statusColour[thisStatus] +"-500");
+          selectedStatusButton.classList.remove("bg-" + statusColourDeselect[thisStatus]);   // then deselect - remove highlight
+          selectedStatusButton.classList.add("bg-" + statusColour[thisStatus]);
         }
       });
     }

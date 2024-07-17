@@ -144,7 +144,8 @@ class StoresController < ApplicationController
     if params[:commit] == "Done"
       @thisOrder.status = "done"
     end
-    if params[:commit] == "delete"
+    # This removes the cancelled item from the brewser order list, which is a delete from the database
+    if params[:commit] == "Remove"
       thisPersonId = @thisOrder.person.id
       myOrderId = "turbo_request_order_" + @thisOrder.id.to_s
       respond_to do |format|

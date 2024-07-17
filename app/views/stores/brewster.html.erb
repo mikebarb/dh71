@@ -1,8 +1,8 @@
 <div id="brewster" class="w-full">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-primary font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
-  <div data-controller="brewster" class="min-h-lvh">
+  <div data-controller="brewster">
     
     <section id="page_header" class="relative flex felx-row justify-between bg-primary w-full">
       <div class="m-4 text-white text-xl font-new font-extrabold text-center flex place-content-center"><%= link_to "GCC App - Order Drinks", "front" %></div>
@@ -14,7 +14,7 @@
         </ul>
       </nav>
     </section>
-    <div id="outer container" class="flex">
+    <div id="outer container" class="flex min-h-[94lvh]">
       <section class="hidden w-2/12">
         <div data-action="click->brewster#findSelectedDrink" data-brewster-target="drinkTemplate" data-drink="drinkPlaceHolder" class="flex font-bold py-2 px-4 rounded">
           <div class="mx-1 w-5/6"></div>
@@ -29,20 +29,20 @@
         </div>
       </section>
       
-      <div id="right container" class="flex flex-col mr-2 w-10/12">
-        <section class="flex justify-between m-2 w-full">
+      <div id="right container" class="flex flex-col w-10/12">
+        <section class="flex justify-between m-2 w-12/12">
           <div class="flex items-center mb-2" data-brewster-target="statusSection" data-showStatus="new ready done">
             <h1 class="font-bold text-base mr-4">Show:</h1>
             <button data-action="click->brewster#getOrders"  class="hidden mx-2 bg-yellow-500 text-white font-bold py-2 px-4 rounded">Get Orders</button>
-            <button data-action="click->brewster#showStatus" data-status="new"   data-brewster-target="showStatus" class="mx-2 bg-blue-500 text-white border-blue-500 border-2 font-bold py-2 px-4 rounded-full">New</button>
-            <button data-action="click->brewster#showStatus" data-status="ready" data-brewster-target="showStatus" class="mx-2 bg-green-500 text-white border-green-500 border-2 font-bold py-2 px-4 rounded-full">Ready</button>
-            <button data-action="click->brewster#showStatus" data-status="done"  data-brewster-target="showStatus" class="mx-2 bg-slate-500 text-white border-slate-500 border-2 font-bold py-2 px-4 rounded-full">Done</button>
+            <button data-action="click->brewster#showStatus" data-status="new"   data-brewster-target="showStatus" class="mx-2 bg-cyan-500 text-white border-cyan-500 border-2 font-bold py-2 px-4 rounded-full">New</button>
+            <button data-action="click->brewster#showStatus" data-status="ready" data-brewster-target="showStatus" class="mx-2 bg-secondary text-white border-secondary border-2 font-bold py-2 px-4 rounded-full">Ready</button>
+            <button data-action="click->brewster#showStatus" data-status="done"  data-brewster-target="showStatus" class="mx-2 bg-primary text-white border-primary border-2 font-bold py-2 px-4 rounded-full">Done</button>
           </div>
         </section>
       
-        <section class="m-2 w-full">
+        <section class="m-2 w-12/12">
           <%= turbo_stream_from 'orders' %>
-          <div id="orders" class="flex flex-col w-full">
+          <div id="orders" class="flex flex-col w-12/12">
             <% @orders.each do |order| %>
               <%= render "order", order: order %>
             <% end %>

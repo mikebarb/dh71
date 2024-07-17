@@ -568,7 +568,7 @@ export default class extends Controller {
 
   // Called when a "drink" button is selected.
   selectDrinkButton(){
-    //console.log("selectDrinkButton called.");
+    console.log("selectDrinkButton called.");
     //clear the flash notice html div field
     this.clearFlash();
     // Now determine what button was pressed.
