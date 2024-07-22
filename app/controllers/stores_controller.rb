@@ -125,6 +125,12 @@ class StoresController < ApplicationController
               .order(:id)
               .where('updated_at > ?', 24.hours.ago)
 
+  # This is for testing only - reduce the timeout period!!
+  #  @orders = Order
+  #            .includes(:person)
+  #            .order(:id)
+  #            .where('created_at > ?', 1.minutes.ago)
+
     @statusList = ["new", "ready", "done"]
 
   end

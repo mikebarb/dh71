@@ -48,9 +48,13 @@ export default class extends Controller {
     //console.log("showStatus called");
     //const statusColour = {"new":"blue", "ready":"green", "done":"slate"};
     const statusColour = {"new":"bg-cyan-500", "ready":"bg-secondary", "done":"bg-primary"};
-    const statusColourDeselect = {"new":"bg-slate-300", "ready":"bg-slate-300", "done":"bg-slate-300"};
+    const statusColourDeselect = {"new":"bg-disabledBg", "ready":"bg-disabledBg", "done":"bg-disabledBg"};
     const statusTextColour = {"new":"text-white", "ready":"text-white", "done":"text-white"};
-    const statusTextColourDeselect = {"new":"text-black", "ready":"text-black", "done":"text-black"};
+    const statusTextColourDeselect = {"new":"text-disabledText", "ready":"text-disabledText", "done":"text-disabledText"};
+    const statusBorderColour = {"new":"border-cyan-500", "ready":"border-secondary", "done":"border-primary"};
+    const statusBorderColourDeselect = {"new":"border-disabledText", "ready":"border-disabledText", "done":"border-disabledText"};
+    // const statusAddCheck = {"new":"hidden", "ready":"hidden", "done":"hidden"};
+    // const statusRemoveCheck = {"new":"hidden", "ready":"hidden", "done":"hidden"};
     const statusValues = ["new", "ready", "done"]; 
     const selectedStatusButton = event.currentTarget; 
     var selectedStatus = selectedStatusButton.getAttribute("data-status");
@@ -65,6 +69,12 @@ export default class extends Controller {
           selectedStatusButton.classList.add(statusColourDeselect[thisStatus]);
           selectedStatusButton.classList.remove(statusTextColour[thisStatus]);                    // then deselect - remove highlight
           selectedStatusButton.classList.add(statusTextColourDeselect[thisStatus]);
+          selectedStatusButton.classList.remove(statusBorderColour[thisStatus]);                    // then deselect - remove highlight
+          selectedStatusButton.classList.add(statusBorderColourDeselect[thisStatus]);
+          // selectedStatusButton.i.classList.remove("hidden"); 
+          // selectedStatusButton.i.classList.add("hidden");
+          selectedStatusButton.children[0].classList.add("hidden");
+          console.log(selectedStatusButton.children[0]);
         }
       });
     }else{
@@ -75,6 +85,11 @@ export default class extends Controller {
           selectedStatusButton.classList.add(statusColour[thisStatus]);
           selectedStatusButton.classList.remove(statusTextColourDeselect[thisStatus]);   // then deselect - remove highlight
           selectedStatusButton.classList.add(statusTextColour[thisStatus]);
+          selectedStatusButton.classList.remove(statusBorderColourDeselect[thisStatus]);   // then deselect - remove highlight
+          selectedStatusButton.classList.add(statusBorderColour[thisStatus]);
+          // selectedStatusButton.i.classList.remove("hidden");                    // then deselect - remove highlight
+          // selectedStatusButton.i.classList.add("hidden");
+          selectedStatusButton.children[0].classList.remove("hidden");
         }
       });
     }

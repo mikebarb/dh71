@@ -31,12 +31,12 @@
       
       <div id="right container" class="flex flex-col w-10/12">
         <section class="flex justify-between m-2 w-12/12">
-          <div class="flex items-center mb-2" data-brewster-target="statusSection" data-showStatus="new ready done">
-            <h1 class="font-bold text-base mr-4">Show:</h1>
-            <button data-action="click->brewster#getOrders"  class="hidden mx-2 bg-yellow-500 text-white font-bold py-2 px-4 rounded">Get Orders</button>
-            <button data-action="click->brewster#showStatus" data-status="new"   data-brewster-target="showStatus" class="mx-2 bg-cyan-500 text-white border-cyan-500 border-2 font-bold py-2 px-4 rounded-full">New</button>
-            <button data-action="click->brewster#showStatus" data-status="ready" data-brewster-target="showStatus" class="mx-2 bg-secondary text-white border-secondary border-2 font-bold py-2 px-4 rounded-full">Ready</button>
-            <button data-action="click->brewster#showStatus" data-status="done"  data-brewster-target="showStatus" class="mx-2 bg-primary text-white border-primary border-2 font-bold py-2 px-4 rounded-full">Done</button>
+          <div class="flex items-center mt-2" data-brewster-target="statusSection" data-showStatus="new ready done">
+            <h1 class="font-bold text-2xl mr-4">Filter:</h1>
+            <button data-action="click->brewster#getOrders"  class="hidden mx-2 bg-yellow-500 text-white text-2xl font-bold py-2 px-4 rounded">Get Orders</button>
+            <button data-action="click->brewster#showStatus" data-status="new"   data-brewster-target="showStatus" class="mx-2 bg-cyan-500 text-white text-2xl border-cyan-500 border-2 font-bold py-2 px-4 rounded-full flex flex-row"><div class="mr-2"><span class="fa-solid fa-check text-white"></span></div>  New</button>
+            <button data-action="click->brewster#showStatus" data-status="ready" data-brewster-target="showStatus" class="mx-2 bg-secondary text-white text-2xl border-secondary border-2 font-bold py-2 px-4 rounded-full flex flex-row"><div class="mr-2"><span class="fa-solid fa-check text-white"></span></div>  Ready</button>
+            <button data-action="click->brewster#showStatus" data-status="done"  data-brewster-target="showStatus" class="mx-2 bg-primary text-white text-2xl border-primary border-2 font-bold py-2 px-4 rounded-full flex flex-row"><div class="mr-2"><span class="fa-solid fa-check text-white"></span></div>  Done</button>
           </div>
         </section>
       

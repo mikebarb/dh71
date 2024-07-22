@@ -19,6 +19,8 @@ module.exports = {
       colors: {
         'primary': '#243551',
         'secondary': '#93A940',
+        'disabledText': '#969696',
+        'disabledBg': '#D5D5D5',
         brown: {
           50: '#fdf8f6',
           100: '#f2e8e5',
