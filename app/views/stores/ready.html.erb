@@ -33,7 +33,7 @@ bg-fixed      Possibly make it parallax
             <%= turbo_stream_from 'orders' %>
             <div id="orders" class="flex flex-col w-full">
               <% @orders.each do |order| %>
-                <%= render "order", order: order %>
+                <%= render "order", order: order, fontSize: "text-9xl" %>
               <% end %>
             </div>
           </section>

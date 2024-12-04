@@ -28,12 +28,11 @@
                 class="flex items-center text-2xl w-full justify-between">
                 
                 <%= form.text_area :id, size: "10x1", class: "hidden", :data => { :filter_target => 'orderId' }, value: order.id %>
-                
                 <div class="hidden w-1/12 break-normal block font-medium mb-1">
                 <%= order.id %>
                 </div>
                 
-                <div class="flex items-center content-center w-3/12 break-normal block font-medium pl-2">
+                <div class="flex items-center content-center w-3/12 break-normal block <%= fontSize %> font-medium pl-2">
                     <span class="fas fa-user my-2 mx-4"></span>
                     <span><%= order.person.name %></span>
                 </div>

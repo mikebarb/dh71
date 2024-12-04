@@ -44,7 +44,7 @@
           <%= turbo_stream_from 'orders' %>
           <div id="orders" class="flex flex-col w-12/12">
             <% @orders.each do |order| %>
-              <%= render "order", order: order %>
+              <%= render "order", order: order, fontSize: "" %>
             <% end %>
           </div>
         </section>
