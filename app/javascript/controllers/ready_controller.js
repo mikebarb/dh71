@@ -44,15 +44,19 @@ export default class extends Controller {
   displaySingle(personElementId){
     //console.log("displaySingle Called - personElementId: ", personElementId);
     var personElement = document.getElementById(personElementId);
+    //console.log("personElement: ", personElement);
     var personStatus = personElement.getAttribute("data-status");
     var personId = personElementId.match(/(\d+$)/)[1];
     var turboElement = document.getElementById("turbo_request_order_" + personId); 
     var personChildren = personElement.children;
+    //console.log("personChildren: ", personChildren );
     personChildren[6].classList.remove("flex");
     personChildren[6].classList.add("hidden");
     personChildren[4].classList.add("hidden");
     personChildren[2].classList.remove("w-3/12");
     personChildren[2].classList.add("w-full");
+    // set the font size for the name displayed in the ready screen
+    personChildren[2].classList.add("text-8xl");
     if(personStatus == "ready"){
         turboElement.classList.remove("hidden");
     }else{
